@@ -1,0 +1,1446 @@
+# MacDescription=Library of common Sub routines for macros in the Clan Wallace Workflow
+# MacFileName=Lib.gsk
+# MacAuthor=Billy of Clan Wallace
+# MacVersion=1.0
+# MacUrl=
+#=================================================================#
+OPTION Explicit=Yes
+
+<Data> VarName=$versions
+# Version 1.0  2025-
+
+#=================================================================#
+<EndData>
+
+BEGINSUB Name=GlobalInit
+# Prevent Window flashing, forms losing focus, performance issues with update processes
+  SPEEDMODE Status=On
+	$splitScreen=$_Splitscreen
+	SPLITSCREEN Display=Off
+	$dualScreen=$_DualScreen
+	DUALSCREEN Display=Off
+
+# Global Defaults
+# $_AppData = C:\GSAK\ClanW
+# $_CurrentDataPath = C:\GSAK\Databases\Poland
+# $_DbPath = C:\GSAK\Databases
+# $_ExePath = C:\PROGRA~2\gsak
+# Macros folder
+	$pathMacros="$_AppData\macros"
+# CW folder
+	$pathCW="$_AppData\macros\CW"
+# CWuser folder
+	$pathCWuser="$_AppData\macros\CWuser"
+# Global macsettings
+	$CWall="$pathCWuser\cwAll.xml"
+
+	$AdvDB="Adventures"
+	$AdvFindsDB="AdventureFinds"
+	$chkElevation=False
+	$chkAllRegions=True # Country, State, County update
+	$ALprefix="AL"
+	$LBprefix="LB"
+	$firstRun=True
+	$setup=False
+	$debug=False
+
+# Persisted Globals
+	$macSettingAll="firstRun,setup,AdvDB,AdvFindsDB,ALprefix,LBprefix,Download,chkElevation,chkAllRegions,user,userId,userGuid,debug,MyFindsDB"
+
+# Restore Global settings
+	MACSETTINGS Type=R File=$CWall Filecheck=N
+
+# Global Constants
+  $br="$_CrLf" # Line break
+  $p="$_CrLf$_CrLf" # Paragraph
+	$comspec=Getenvv("comspec")
+	$delimcvt="_delimcvt_"
+	$crlfcvt="_crlfcvt_" # Row Separator for SQLite queries
+  $locations=Sysinfo("locations")
+  $locationsList=RegExReplace("\s*?,.*?;",$locations,";")
+  $today=Datetosql($_Today) # Todays date
+	$CW="$pathCWuser\CW.db3"
+	$apiLog="$_AppData\apilog.txt"
+
+ENDSUB
+
+BEGINSUB Name=AttachCW # Attach to the CW database, with PRAGMA check
+  $S=Sqlite("sql","PRAGMA database_list;")
+  IF At("CW.db3",$S)=0
+    $file=$CW
+		$S=Sqlite("sql","ATTACH '$file' as CW")
+  ENDIF
+ENDSUB
+
+BEGINSUB Name=AttachCodes # Attach to the Codes database, with PRAGMA check
+  $S=Sqlite("sql","PRAGMA database_list;")
+  IF At("Codes.db3",$S)=0
+    $file="$_AppData\macros\Codes.db3"
+    $S=Sqlite("sql","ATTACH '$file' as CodesDB")
+  ENDIF
+ENDSUB
+ 
+BEGINSUB Name=PopulateArea # Populate Area Circles with Adventure Labs
+	# Get Circle area data
+			$S=Sqlite("sql","SELECT * FROM CW.AdventureCircles WHERE Circle=$circle")
+			$title=Extract($S,";",2)
+			$lat=Extract($S,";",3)
+			$lon=Extract($S,";",4)
+			$radius=Extract($S,";",5)
+			$unit=Extract($S,";",6)
+
+			$S=" Processing Area $circle. $title (Radius: $radius $unit)$p"
+			GOSUB Name=ShowStatus
+			$latitude=$lat
+			$longitude=$lon
+
+			GOSUB Name=Get100Adventures
+			$totalAdvCount=Val(Regexsub("x-total-count: (\d+)",$_Gcapi2header,1,1))
+			$title="Get Missing Adventures for the '$title' Area"
+
+			REPEAT # Loop for each 100 Adventures in API call
+
+				GOSUB Name=Get100Adventures
+
+				$NN=$skip+$take
+				$S="$br Checking $NN of $totalAdvCount Adventures$p"
+				GOSUB Name=ShowStatus
+# ApiMaster details
+				$S=Sqlite("sql","SELECT * FROM ApiMaster WHERE id NOT IN (SELECT Guid FROM Caches)")
+
+# Are there any Adventures in ApiMaster not in the Adventures database
+				IF $_SqlRows<>0 # If missing, then create them
+					$max=$_SqlRows
+					$offset=0
+					REPEAT # Create Missing Adventures in this API call
+						$url=Sqlite("sql","SELECT deeplink FROM ApiMaster WHERE id NOT IN (SELECT Guid FROM Caches) LIMIT 1")
+						$N=At("goto/", $url)+5
+						$deeplink=Substr($url,$N,0)
+
+						GOSUB Name=AdvUTF8
+			
+						$offset=$offset+1
+					UNTIL $offset=$max # Create Missing Adventures
+				
+				ENDIF #
+
+				$skip=$skip+$take
+				IF $skip MOD 3000 = 0
+					SHOWSTATUS Display=Off
+				ENDIF
+			UNTIL $totalAdvCount<=$skip
+
+ENDSUB
+
+BEGINSUB Name=Get100Adventures # Get 100 coreCodes from API and store in CW.ApiCodes
+	IF $chkIncludeFinds
+		$S="excludeCompleted=False"
+	ELSE
+		$S="excludeCompleted=True"
+	ENDIF
+	$url="adventures/search?q=location:[$latitude,$longitude]%2bradius:$radius$unit&skip=$skip&take=$take&fields=id,deepLink&excludeOwned=false&$S"
+	$S=gcapi2($url)
+ENDSUB
+
+BEGINSUB Name=AdvUTF8
+
+	$url="https://www.clanwallace.me.uk/labs/new_adventure.php?action=adventure&uuid=$deeplink"
+	IF $debug
+		MACRO File="Log.gsk?Log1" Varscope=Global
+	ENDIF
+	$data=GetUrl($url)
+# debug status=on
+# CLIP Data=$data
+IF At("ERROR: Could not fetch page:", $data)=0
+
+	$rowDelim="|@|"
+	$colDelim="||"
+
+# Adventure data
+	$advData=Extract($data, $rowDelim, 1)
+	$coreCode=Extract($advData, $colDelim, 1)
+	$code="$ALprefix$coreCode"
+	$url="https://labs.geocaching.com/goto/$deeplink"
+
+	GOSUB Name=WaypointDefaults
+	CANCELFILTER # required before creating waypoints
+  # IF InTransaction()
+    # TRANSACTION Action=End
+		# TRANSACTION Action=Begin
+  # ENDIF 
+# debug status=on
+	$done=False
+  $B=Seek($code)
+  IF NOT($B) # Make sure waypoint does not exist
+    ADDNEW
+		$d_Code=$code
+    $name=Extract($advData, $colDelim, 4)
+		$d_Name=$name
+    $hints=Extract($advData, $colDelim, 23)
+		$d_Hints=$hints
+		$cacheId=Extract($advData, $colDelim, 2)
+    $d_CacheId=$cacheId
+    $d_Guid=Extract($advData, $colDelim, 3)
+		$ownerId=Extract($advData, $colDelim, 8)
+    $d_OwnerId=$ownerId
+		$OwnerName=Extract($advData, $colDelim, 9)
+    $d_OwnerName=$OwnerName
+    $d_PlacedBy=$OwnerName
+		$d_FavPoints=Val(Extract($advData, $colDelim, 11))
+		$created=Extract($advData, $colDelim, 13)
+		$S="$p $name$br $hints Adventure. Created: $created $p$br"
+		GOSUB Name=ShowStatus
+
+		$d_Created=SQLToDate($created)
+    $lat=Extract($advData, $colDelim, 17)
+		$d_Latitude=$lat
+    $lon=Extract($advData, $colDelim, 18)
+		$d_Longitude=$lon
+    $d_CacheType=Extract($advData, $colDelim, 20)
+
+
+    $d_DNF=StrToBool(Extract($advData, $colDelim, 25))
+		IF Left($code,2)=$ALprefix
+			$stages=Extract($advData, $colDelim, 26)
+			$d_User2=$stages
+		ENDIF
+		$d_GcNote=Extract($advData, $colDelim, 27)
+    $d_ShortDescription=Extract($advData, $colDelim, 28)
+    $d_LongDescription=Extract($advData, $colDelim, 29)
+    $d_Container=$container
+    $d_LongHtm=$longHtm
+    $d_ShortHtm=$shortHtm
+    $d_Symbol=$symbol
+    $d_URL=$url
+		$d_Status=$status
+		$d_MacroFlag=True
+
+		$hasCorrected=StrToBool(Extract($advData, $colDelim, 24))
+		IF $hasCorrected
+			TABLE Active=Corrected Scope=Parent
+			ADDNEW
+			$d_kAfterLat=$lat
+			$d_kAfterLon=$lon
+			TABLE Active=Caches   
+		ENDIF
+
+		IF $debug
+			MACRO File="Log.gsk?Log2" Varscope=Global
+		ENDIF
+
+  ELSE
+		$done=True
+	ENDIF 
+	IF Not($done)
+		$row=2
+		$maxRows=Val($stages)+1 # 6
+		WHILE $row <= $maxRows
+			$stageData=Extract($data, $rowDelim, $row)
+			
+			$suffix=Extract($stageData, $colDelim, 2)
+			$code="$LBprefix$coreCode$suffix"
+
+# Create a unique CacheId for each Lab
+		$N=Val(Sqlite("sql","SELECT MAX(CAST(CacheId AS INTEGER)) FROM Caches"))
+		IF $N < 99000001
+			$N=99000001
+		ELSE
+			$N=$N+1
+		ENDIF
+		$cacheId=NumToStr($N)
+
+		$B=Seek($code)
+		IF NOT($B) # Make sure waypoint does not exist
+			ADDNEW
+			$d_Code=$code
+			$d_CacheId="$cacheId"
+			$d_Guid=Extract($stageData, $colDelim, 3)
+			$d_Name=Extract($stageData, $colDelim, 4)
+
+			$S="Creating Lab: '$d_Name'$br"
+			GOSUB Name=ShowStatus
+
+			$d_OwnerId=$ownerId
+			$d_OwnerName=$OwnerName
+			$d_PlacedBy=$OwnerName
+			$d_FavPoints=0
+			$d_Created=SQLToDate($created)
+			$d_Latitude=Extract($stageData, $colDelim, 6)
+			$d_Longitude=Extract($stageData, $colDelim, 7)
+			$d_CacheType="Q"
+			$d_Hints=$hints
+			$d_ShortDescription=Extract($stageData, $colDelim, 13)
+			$d_LongDescription=Extract($stageData, $colDelim, 18)
+			$d_Container=$container
+			$d_LongHtm=$longHtm
+			$d_ShortHtm=$shortHtm
+			$d_Symbol=$symbol
+			$d_URL=$url
+			$d_Status=$status
+			$d_MacroFlag=True
+
+			ENDIF
+			$row=$row + 1
+		ENDWHILE	
+
+	ENDIF
+ELSE
+	$S=Sqlite("sql","DELETE FROM ApiMaster WHERE Deeplink Like '%$deeplink%'")
+ENDIF
+
+ENDSUB 
+
+BEGINSUB Name=WaypointDefaults # Set defaults before creating waypoints
+	$container="Virtual"
+	$dnf=False
+	$longHtm=True
+	$shortHtm=True
+	$symbol="Geocache"
+	$shortDescription=""
+	$gcNote=""
+	$favPoints="0"
+	$hasCorrected=False
+	$status="A"
+	$hints=""
+ENDSUB
+
+BEGINSUB Name=CreateWaypointFromVars # Populate waypoint fields
+	CANCELFILTER # required before creating waypoints
+  $b=Seek($code)
+  IF NOT($b) # Make sure waypoint does not exist
+    ADDNEW
+		$d_Code=$code
+    $d_CacheId=$cacheId
+    $d_Name=$name
+    $d_PlacedBy=$placedBy
+    $d_CacheType=$cacheType
+    $d_Container=$container
+    $d_DNF=$dnf
+    $d_Latitude=$lat
+    $d_LongHtm=$longHtm
+    $d_Longitude=$lon
+    $d_OwnerId=$ownerId
+    $d_OwnerName=$ownerName
+    $d_ShortHtm=$shortHtm
+    $d_Symbol=$symbol
+    $d_Guid=$guid
+    $d_LongDescription=$longDescription
+    $d_ShortDescription=$shortDescription
+    $d_URL=$url
+    $d_Hints=$hints
+		$d_GcNote=$gcNote
+		IF Left($code,2)=$ALprefix
+			$d_User2=$stages
+		ENDIF
+		$d_FavPoints=Val($favPoints)
+		$d_Status=$status
+
+		IF $hasCorrected
+			TABLE Active=Corrected Scope=Parent
+			ADDNEW
+			$d_kAfterLat=$lat
+			$d_kAfterLon=$lon
+			TABLE Active=Caches   
+		ENDIF
+
+		$d_MacroFlag=True
+
+	ELSE
+#		MSGOK Msg="'$code' already exists in this database!"
+  ENDIF 
+ENDSUB
+
+BEGINSUB Name=MOVECOPY # Move or Copy Caches to Destination Database
+# $rbMove must be set to "True" # Default: $rbCopy
+# $rbReplace must be to "True" # Default: $rbAdd
+# [DestinationDB] set for "destination Database"
+  IF Not($rbMove)
+    $rbCopy=True
+  ENDIF
+  IF Not($rbReplace)
+    $rbAdd=True
+  ENDIF
+  $S=$moveCopy # Save template
+  $moveCopy=REPLACE("!!rbtMove!!","$rbMove",$moveCopy)
+  $moveCopy=REPLACE("!!rbtCopy!!","$rbCopy",$moveCopy)
+  $moveCopy=REPLACE("!!rbtReplace!!","$rbReplace",$moveCopy)
+  $moveCopy=REPLACE("!!rbtAdd!!","$rbAdd",$moveCopy)
+  $moveCopy=REPLACE("!!rbtAddFlag!!","$rbAddFlag",$moveCopy)
+  $moveCopy=REPLACE("!!DestinationDB!!","$destinationDB",$moveCopy)
+  MACROSET Dialog=MOVECOPY Varname=$moveCopy
+  MOVECOPY Settings=<MACRO>
+  $moveCopy=$S # Restore template
+	$rbCopy=True
+	$rbMove=False
+	$rbAddFlag=False
+ENDSUB 
+
+BEGINSUB Name=Validatelatlon
+  $coordinates=Alltrim($coords)
+  
+# If no semicolon exists, but there is a space, swap the space for a semicolon
+  IF At(";", $coordinates) = 0 AND At(" ", $coordinates) > 0
+    $coordinates=RegExReplace("(\d)\s+(-?\d)", $coordinates, "$1;$2", "$")
+  ENDIF
+
+# Replace colons with semicolons for Gcalc compatibility
+  IF At(":", $coordinates) > 0
+    $coordinates = Replace(":", ";", $coordinates)
+  ENDIF
+  
+# Validate using Gcalc
+  $S=Gcalc($coordinates, "formatDegrees")
+  
+  IF Left($S, 1)="*"
+    $coordinates="!!! Invalid Coordinates !!!"
+  ELSE 
+    $lat=Extract($S, ";", 1)
+    $lon=Extract($S, ";", 2)
+		$latitude=$lat
+		$longitude=$lon
+    
+# Generate DDM format
+    $coordsDDM=Gcalc($S, "formatMinutes")
+    $coordsDDM=Replace(";", " ", $coordsDDM)
+    $coordsDDM=Replace("°", "", $coordsDDM)
+  ENDIF 
+ENDSUB
+
+BEGINSUB Name=ShowStatus
+# Title and dimensions can be set but defaults are set
+# To begin a new Multi ShowStatus, set: $statusMsg=""
+# $S=" msg.$br", GOSUB Name=ShowStatus
+# Continue Multi: Must assign persisted memo to: $S="$statusMsg plus the next msg.br"
+# Always add a space before msg and a $br/$p after
+#    $S=" New message to be persisted into statusMsg.$br"
+# There is a 1 second delay but just add DELAY Ms=nnnn to extend delays
+# Always set display off when switching to single/multi modes
+# Single in loop: Display Off. Use the SHOWSTATUS Mtype=single command
+# $show="Height=120 Width=600 Left=10 Top=10"
+# SHOWSTATUS Msg=$msg $show
+# Begin a new multi ShowStatus process, empty Persisted multi memo: $statusMsg=""
+
+# Set defaults
+	IF $title="" # Default
+		$title="User Feedback"
+	ENDIF
+	IF $height=0 # Defaults
+		$width=420
+		$height=500
+		$top=4
+		$left=4		
+	ENDIF
+
+	SHOWSTATUS msg=$S width=$width height=$height top=$top left=$left Title=$title Mtype=multi
+
+# Persist multi memo
+	IF $statusMsg<>$S
+		$statusMsg=$statusMsg+$S
+	ELSE
+		$statusMsg=$S
+	ENDIF
+	
+# minimum wait. Add extra time outside of sub if needed
+	DELAY Ms=100
+	
+ENDSUB 
+
+BEGINSUB Name=HtmlReport # Build an HTML report
+# $htmlTitle: One Title
+# $htmlStatus: (many)=$htmlStatus+"<tr><td>Item</td><td>Status</td></tr> (many)"
+# $htmlContent: One HTML Content block, displayed below $htmlStatus
+
+  $htmlData=$htmlFile # Keep a copy of HTML template
+
+# Dynamic updates to HTML document
+  $htmlFile=REPLACE("!!Title!!","$htmlTitle",$htmlFile)
+  $htmlFile=REPLACE("!!Content!!","$htmlContent",$htmlFile)
+  $htmlFile=REPLACE("!!Status!!","$htmlStatus",$htmlFile)
+
+# Create the HTML file
+  $file=$_AppData+"\temp\cw.html"
+  $S=Putfile($file,$htmlFile)
+
+# Could not complete
+  IF Left($S ,4)<>"*OK*"
+    RETURN Msg="Sorry! For some reason I couldn't generate the HTML Report"
+  ENDIF 
+
+# Display the HTML page
+  WEB Url="$file"
+
+  $htmlFile=$htmlData # Restore the template for reuse
+  $htmlTitle=""
+  $htmlContent=""
+  $htmlStatus=""
+
+ENDSUB # HtmlReport
+
+BEGINSUB Name=CountryStateCountyUpdate # Update Country, State and County fields
+# $msg generated for feedback. Use in MSGOK or SHOWSTATUS
+	CANCELFILTER # Very quick if we always do database
+	$countrys=GetCountry("CB")
+	$states=GetState("SB")
+	$counties=GetCounty("YB")
+	$msg=" countrys Updated=$countrys $br States Updated=$States $br Counties Updated=$Counties"
+ENDSUB 
+
+BEGINSUB Name=ElevationUpdate
+# Update Elevation fields if Resolution is empty
+  $N=Val(Sqlite("sql","SELECT COUNT(*) FROM Caches WHERE Resolution=''"))
+  IF $N<>0
+    MFILTER Where=Resolution=""
+    UPDATEELEVATION Type=M ShowSummary=N
+  ENDIF 
+ENDSUB 
+
+BEGINSUB Name=CheckMacros # Checks if Macro exists. Displays Help if missing
+  $file="$_AppData\macros\$macro.gsk"
+  IF Not (Fileexists($file))
+    MSGOK Msg=" The Macro '$macro' is missing!$p Opening the download page in the Macro Index now. $p Please read through the version notes and the Help document before downloading and installing.$p $msg"
+    $url="https://gsak.net/board/index.php?showtopic=$topic&view=findpost"
+		WEB Url="$url"
+    CANCEL 
+  ENDIF 
+ENDSUB 
+
+BEGINSUB name=CheckDatabaseNotEmpty # Some commands fail if the table is empty
+  IF $_DbCount=0
+    ADDNEW
+    $d_Code="ZapMe"
+    $d_Name="Please delete me! Created because the Caches table was empty."
+  ENDIF
+ENDSUB 
+
+BEGINSUB Name=Balances # Get Lite and Full Quotas and Reset Time
+# Populate ApiMaster, Quota free
+	$url="users/me/?fields=geocacheLimits.liteCallsRemaining,geocacheLimits.liteCallsSecondsToLive,geocacheLimits.fullCallsRemaining,geocacheLimits.fullCallsSecondsToLive"
+	GOSUB Name=GcApi2
+
+# This one call gets everything we need for quota and resets.
+  $S=Sqlite("sql","SELECT geocacheLimitsliteCallsRemaining,geocacheLimitsliteCallsSecondsToLive,geocacheLimitsfullCallsRemaining,geocacheLimitsfullCallsSecondsToLive FROM ApiMaster;")
+
+# Extract values and calculate Lite seconds
+  $lite=Val(Extract($S, ";", 1))
+  $liteSeconds=Val(Extract($S, ";", 2))
+
+  IF $liteSeconds=0
+    $liteSeconds=86400
+  ENDIF 
+# ENDIF Check $liteSeconds
+
+# Calculations are in seconds
+  $seconds=$liteSeconds
+
+# Pass seconds to calculate Lite Reset time
+  GOSUB Name=CalculateTime
+	$liteAt=Sqlite("sql","SELECT strftime ('on the %Y-%m-%d at %H:%M hrs','now','localtime','+$hrs hours','+$mins minute')")
+
+# Use $liteMsg to add to HtmlReport for Lite quota
+  $liteMsg="<tr><td>Lite format quota remaining</td><td>$lite (balance will be reset in $hrs hours $mins minutes and $secs seconds <br>$liteAt)</td></tr>"
+# and $liteReset for dialogs
+  $liteReset="Lite format quota remaining is $lite. Balance will be reset in $hrs hours $mins minutes and $secs seconds."
+
+# Extract values and calculate Full seconds
+  $full=Val(Extract($S, ";", 3))
+  $fullSeconds=Val(Extract($S, ";", 4))
+
+  IF $fullSeconds=0
+    $fullSeconds=86400
+  ENDIF 
+# ENDIF Check $fullSeconds
+
+# Calculations are in seconds
+  $seconds=$fullSeconds
+
+# Pass seconds to calculate Full Reset time
+  GOSUB Name=CalculateTime
+	$fullAt=Sqlite("sql","SELECT strftime ('on the %Y-%m-%d at %H:%M hrs','now','localtime','+$hrs hours','+$mins minute')")
+# Full HTML msg
+  $fullMsg="<tr><td>Full format quota remaining</td><td>$full (balance will be reset in $hrs hours $mins minutes and $secs seconds <br>$fullAt)</td></tr>"
+# Full Dialog msg
+  $fullReset="Full format quota remaining is $full. Balance will be reset in $hrs hours $mins minutes and $secs seconds."
+ENDSUB # Balances
+
+BEGINSUB Name=GcApi2 
+# Usage:
+# Check for errors when making API calls. Just call once before a loop and then, inside the loop, check for specifics, such as speeding tickets.
+
+# Parameters: 
+# $url (For API call)
+# $verb (Defaults to "Get") Methods can be Get, Post, Put or Delete
+# $json (Defaults empty string) Formatted Json data. 
+#    Only meaningful (and required) for Post and Put methods
+# $apiCaption (Defaults empty string) for dialog feedback
+
+# Returned Variables:
+#	$apiError=True if there is an error
+# $data=Result in JSON format. Usually not used. The ApiMaster or GcApi2 tables are accessed for resulting data.
+# $msg=Report of error information. A YesNo dialog will be displayed to allow the macro to continue or cancel. It is also copied to the Clipboard.
+
+# Calling Code:
+	# $url="The API request"
+	# $apiCaption="Feedback Caption for the API call"
+	# GOSUB Name=GcApi2 # Call this sub
+	# IF Not($apiError) # OR # IF $apiError # OR # use ELSE
+		# Code to process returned API data
+	# ENDIF 
+	# IF $apiNoData
+		 # skip / continue / fallback
+	# ENDIF
+
+# Notes:
+# If a valid API request returns no data, $apiNoData=True.
+# This is NOT treated as an API error and no dialog is shown.
+# An informational message is stored in $msg.
+# The calling code is responsible for handling this condition, e.g.:
+#
+# IF $apiNoData
+#   display or handle $msg as required
+# ENDIF
+
+# Clean start
+	$apiError=False
+	$apiNoData=False
+	$apiLog="$_AppData\apilog.txt"
+	$statusCode=0
+
+	IF $verb="" # Only True on first call in macro
+		$verb="Get"
+	ENDIF
+	$S=Sqlite("sql","DROP TABLE IF EXISTS gcapi2;DROP TABLE IF EXISTS ApiMaster;")
+
+# Call API
+  $data=GcApi2($url, $verb, $json, $apiCaption)
+	$apiTotal=Val(RegExSub("x-total-count: (\d+)",$_GcApi2Header,1,1))
+
+	BEGINCASE
+		CASE $data="[]" AND Not($_GcApiError)
+			# Next most likely case is a valid API call that returns no data
+			$msg="The API call has not returned any data.$p There was no API Error so the request was valid but there is no data that matches the request.$p If you believe data should have been returned, then create a 'Support Post' for this macro and paste in the message from the Clipboard.$p The API Request was:$br $url"
+			$apiNoData=True
+		CASE $_GcApiError
+		  # We have an API error so get details
+			$statusCode=Val(RegExSub("statusCode"":(\d+),",$data,1,1))
+			$statusMessage=RegExSub("statusMessage"":""(.*?)"",",$data,1,1)
+			$errorMessage=RegExSub("errorMessage"":""(.*?)""",$data,1,1)
+			$limitReset=RegExSub("x-rate-limit-reset: (\d+)",$_GcApi2Header,1,1)
+			$optedOut=RegExSub("x-opted-out: (.*)",$_GcApi2Header,1,1)
+			$apiError=True
+			$msg="$apiCaption$p API Request$br $url$p statusCode=$statusCode$br statusMessage=$statusMessage$br errorMessage=$errorMessage$br limitReset=$limitReset$br apiTotal=$apiTotal$br optedOut=$optedOut$br GcApiError=$_GcApiError$p If this error persists, Create a Support post for this macro and paste in the message from the Clipboard. "
+			BEGINCASE
+				CASE $statusCode=429 # Speeding Ticket
+# api calls exceeded maximum allowed 60 per Minute, so delay and try again					
+					$delay=Val(Regexsub("x-rate-limit-reset: (\d+)", $_GcApi2Header,1,1))
+					SHOWSTATUS msg="Waiting $delay seconds (Exceeded 60 calls per min)" width=400 top=4 left=4 
+					$delay=$delay*1000
+					DELAY Ms=$delay
+					SHOWSTATUS Display=Off
+					GOSUB Name=GcApi2
+					EXITSUB
+				CASE $statusCode=401 # Unauthorized
+						$msg=$msg+"Unauthorized.$p Go to GSAK -> Geocaching.com Access -> Get Another Access Token and authorize GSAK to access your account."
+				CASE $statusCode=403 # Forbidden 
+					$msg="Forbidden.$p Mostly likely caused by trying to access data for opted-out users or non-public Adventures.$p"+$msg
+				CASE SysInfo("Internet")="no" # Fix for temporary loss of Internet and try again
+					IF YesNo("You have lost Internet connection.$p Select 'Yes' once you have reconnected or 'No' to Cancel.")
+						GOSUB Name=GcApi2
+					ELSE
+						CANCEL
+					ENDIF
+				CASE $statusCode=0 AND $errorMessage="" # No help here
+# ApiLog is only erased if we get here
+					IF $logErased
+# Check for 401 Unauthorized
+						$file=GetFile($APILog)
+# This could become a CASE/OTHERWISE block if more errors discovered
+						IF At("401 Unauthorized", $file)<>0
+							$msg=$msg+"Unauthorized.$p Go to GSAK -> Geocaching.com Access -> Get Another Access Token and authorize GSAK to access your account."
+						ELSE
+							$msg=$msg+"$p Unknown Error: Check ApiLog $p $file"
+						ENDIF						
+					ELSE
+# Clear log file before API call in case we have an error but no error data
+						FileErase File=$apiLog onError=Continue
+						$logErased=True
+						GOSUB Name=GcApi2
+						EXITSUB
+					ENDIF
+			ENDCASE
+
+	ENDCASE
+
+# Display a message and confirm next action
+	IF $apiError
+		 CLIP Data=$msg
+		 IF YesNo("$msg$p Do you want to continue?")
+				# continue
+		 ELSE
+				CANCEL
+		 ENDIF
+	ENDIF
+	
+# Reset defaults
+	$apiCaption=""
+	$verb="Get"
+	$json=""
+	$logErased=False
+ENDSUB # GcApi2 
+
+BEGINSUB Name=CleanFinds # Deal with Found Caches
+# Filter on Found Caches if we have any  
+	MFILTER Where=Found
+	IF $_FilterCount>0
+# Check what the user wishes to do with found Archives
+		BEGINCASE 
+			CASE $rbFoundDelete # Delete Finds
+				IF YesNo("Do you want to Delete $_FilterCount Found caches from the '$_CurrentDatabase' database?", "Confirming Found Cache Deletion")
+					MACRODELETE Action=DelScope
+					MACRODELETE Action=Commit
+				ENDIF
+			CASE $rbFoundMove # Move to selected database
+				$destinationDB=$cboFound
+				IF YesNo("Do you want to Move $_FilterCount Found caches from the '$_CurrentDatabase' database to the '$destinationDB'?", "Confirming Found Cache Move")
+					$rbMove=True
+					GOSUB Name=MOVECOPY
+				ENDIF
+    ENDCASE 
+		$frmMain=Editform($frmMain,"btnFinds","Enabled","No")
+  ELSE # No Finds
+    MSGOK Msg="No Found Caches were detected."
+  ENDIF # Found Caches
+ENDSUB 
+
+BEGINSUB Name=CleanArchives # Deal with Archived Caches
+# Filter on Archived Caches if we have any  
+	MFILTER WHERE=Status ="X" AND NOT Found
+	IF $_FilterCount>0
+# Check what the user wishes to do with Archived Caches
+		BEGINCASE 
+			CASE $rbArchivesDelete # Delete Finds
+				IF YesNo("Do you want to Delete $_FilterCount Archived caches from the '$_CurrentDatabase' database?", "Confirming Archived Cache Deletion")
+					MACRODELETE Action=DelScope
+					MACRODELETE Action=Commit
+				ENDIF
+			CASE $rbArchivesMove # Move to selected database
+				$destinationDB=$cboArchives
+				IF YesNo("Do you want to Move $_FilterCount Archived caches from the '$_CurrentDatabase' database to the '$destinationDB'?", "Confirming Archived Cache Move")
+					$rbMove=True
+					GOSUB Name=MOVECOPY
+				ENDIF
+    ENDCASE 
+		$frmMain=Editform($frmMain,"btnArchives","Enabled","No")
+  ELSE # No Archives
+    MSGOK Msg="No Archived Caches were detected."
+  ENDIF # Archived Caches
+
+ENDSUB 
+
+BEGINSUB Name=Home # Get Home Location
+  IF $home=""
+    $file="$_AppData\gsak.db3"
+    $S=Sqlite("open",$file)
+    $lat=Sqlite("sql","SELECT uData FROM UserInfo WHERE uKey='HomeLat'")
+    $lon=Sqlite("sql","SELECT uData FROM UserInfo WHERE uKey='HomeLon'")
+    $S=Sqlite("close",$file)
+    $coords="$lat,$lon"
+    $home=$coords
+  ELSE # $home has coords
+    $coords=$home
+  ENDIF # Build Home Coords
+  GOSUB Name=ValidateLatLon
+  $lblCoords="Home Coordinates"
+ENDSUB 
+
+BEGINSUB Name=Lastimport # Get location persisted in Last Run
+  MACSETTINGS Type=R Vars=lblCoords,coords,coordsDDM,lat,lon,radius,cboRadius
+  $lblCoords="Last Import Coordinates"
+ENDSUB 
+
+BEGINSUB Name=Currentwaypoint # Get Location of Current Waypoint
+  IF $_DBCount > 0
+    $coords="$d_Latitude, $d_Longitude"
+    GOSUB Name=Validatelatlon
+    $lblCoords="Current Waypoint Coordinates"
+  ELSE 
+    MSGOK Msg="There are no waypoints in the database. Coordinates could not be obtained."
+  ENDIF 
+ENDSUB 
+
+BEGINSUB Name=CentrePoint # Get Location of Current Centre Point
+  IF $centrePoint=""
+    $lat=Sysinfo("gsakini;LastCenter;Lat")
+    $lon=Sysinfo("gsakini;LastCenter;Lon")
+    $coords="$lat,$lon"
+    $centrePoint=$coords
+  ELSE 
+    $coords=$centrePoint
+  ENDIF 
+  GOSUB Name=Validatelatlon
+  $lblCoords="Centre Point Coordinates"
+ENDSUB 
+
+BEGINSUB Name=Location # Choose from saved Locations
+  WHILE True
+    $FormExit=form($frmLocation,"")
+    BEGINCASE 
+      CASE $formExit="DelayExit"
+        BREAK 
+      CASE $formExit="SystemExit"
+        BREAK 
+      CASE $formExit="cboLocations"
+        $location=Extract($cboLocations,",",1)
+        $rx=$cboLocations + ",(.*?);"
+        $coords=RegExSub($rx,$locations,1,1)
+        GOSUB Name=Validatelatlon
+        $lblCoords="$location Coordinates"
+        BREAK 
+    ENDCASE 
+  ENDWHILE 
+ENDSUB 
+
+BEGINSUB Name=Map # Pick a Location from a Map
+  WEB Url="https://www.google.com/maps/@$lat,$lon,8z"
+  MSGOK Msg=" Zoom into your desired location on the Google Map.$p Right-click on the map at the centre point for your target area.$br You will see a message, 'Copied to clipboard'.$p Hit OK to Continue."
+  $coords=Getcliptext()
+  GOSUB Name=Validatelatlon
+  $lblCoords="Map Coordinates"
+ENDSUB 
+
+BEGINSUB Name=Freeform # Paste in a set of Coordinates to be the Location
+  $coords=$coordsDDM
+  GOSUB Name=Validatelatlon
+  $lblCoords="Freeform Coordinates"
+ENDSUB 
+
+BEGINSUB Name=Radius # Check and validate Radius
+# Regex for valid Radius
+  $S="[1-9][0-9]*"
+# If not valid, return and correct
+  IF Regexcount($S,$radius)=0
+    MSGOK Msg=" Not a valid radius.$p Radius must be numeric and greater than zero '0'."
+    GOSUB Name=LocationsForm
+  ELSE 
+# Calculate Radius in Miles, Kilometers and Metres
+    BEGINCASE 
+      CASE $cboRadius="Miles"
+        $radiusM=Val($radius)
+        $radiusM=$radiusM * 1609.344
+      CASE $cboRadius="Kilometres"
+        $radiusM=Val($radius)
+        $radiusM=$radiusM * 1000
+    ENDCASE 
+    $radiusM=Int($radiusM)
+    $radiusKM=$radiusM / 1000
+    $radiusKM=Int($radiusKM)
+    $radiusMiles=Numtostr(Round($radiusM / 1609.344,2))+" Miles"
+  ENDIF 
+ENDSUB 
+
+BEGINSUB Name=CodesDB # Interactions with the Codes Database
+# Set the CASE variable to True and call this Sub
+#  $codesCombo=True
+#  GOSUB Name=CodesDB
+
+# Attach to Codes database if not already connected
+  GOSUB Name=AttachCodes
+
+  BEGINCASE 
+    CASE $codesCombo # Populate combo if empty
+# Get List Names from the Codes database.
+      $S=Sqlite("sql","SELECT Label FROM CodesDB.CodeLists ORDER BY Id")
+
+# Make list combobox friendly: codeA;codeB
+      IF $_SqlRows<>0
+        $cboLists=Replace($_Crlf,";",$S)
+      ELSE 
+        $cboLists=""
+      ENDIF 
+			$cboListsValues=$cboLists
+      $frmMain=Editform($frmMain,"cboLists","Values",$cboLists)
+
+      $codesCombo=False # Just a one off process
+
+    CASE $codesInList # Get IN(List) friendly codes for selected CodeList
+# Parameter: $codesInList=True
+# Returns: $codeList in 'codeA','codeB' format
+# Updates $id for selected CodeList
+
+# Get Codes for selected list
+      $S=Sqlite("sql","SELECT Codes FROM CodesDB.CodeLists WHERE Label=" + Sqlquote($cboLists), "crlfcvt=$crlfcvt")
+
+# Make the list 'Code IN($list)' friendly
+      $codeList="'" + REPLACE($Crlfcvt, "','", $S) + "'"
+
+# Get the id of CodeList
+      $id=Sqlite("sql","SELECT Id FROM CodesDB.CodeLists WHERE Label=" + Sqlquote($cboLists))
+
+      $codesInList=False
+
+    CASE $codesReplace # Replace CodeList with new codes in $codes
+
+# Parameter:  $codes is a CSV list of codes to replace in CodeList    
+#             $codesReplace=True
+
+# Get the id of CodeList
+      $id=Sqlite("sql","SELECT Id FROM CodesDB.CodeLists WHERE Label=" + Sqlquote($cboLists))
+
+      IF $id<>""
+# Delete existing codes in CodeList
+        $S=Sqlite("sql","UPDATE CodesDB.CodeLists SET Codes='' WHERE Id=$id")
+        $codeList=""
+
+# Add Codes to CodeList if not duplicates
+        GOSUB Name=DuplicateCodes
+
+# Convert CSV list of codes into a CrLf separated string
+        $codeList=Alltrim(REPLACE(",", $_CrLf, $codeList))
+
+# Add new codes to CodeList
+        $S=Sqlite("sql","UPDATE CodesDB.CodeLists SET Codes='$codeList' WHERE Id=$id")
+      ENDIF
+      $codesReplace=False
+
+    CASE $codesAdd # Add Codes to an existing CodeList
+# Parameter:  $codes is a CSV list of codes to add to CodeList  
+#             $codesAdd=True  
+
+# Get codes from CodeList with $_CrLf marked with delimiter: crlfcvt=$crlfcvt
+      $S=Sqlite("sql","SELECT Codes FROM CodesDB.CodeLists WHERE Label='$cboLists'", "crlfcvt=$crlfcvt")
+
+# If not empty. make CSV list of codes, replacing delimiter with comma
+      IF $S<>""
+        $codeList=REPLACE($Crlfcvt, ",", $S)
+      ELSE
+        $codeList=""
+      ENDIF 
+
+# Get the id of CodeList
+      $id=Sqlite("sql","SELECT Id FROM CodesDB.CodeLists WHERE Label=" + Sqlquote($cboLists))
+
+      IF $id<>""
+# Add Codes to CodeList if not duplicates
+        GOSUB Name=DuplicateCodes
+
+
+# Now the CodeList needs to be converted into $_CrLf separated list
+        $codeList=Alltrim(REPLACE(",", $_CrLf, $codeList))
+
+# Update the CodeList with the existing and new codes
+        $S=Sqlite("sql","UPDATE CodesDB.CodeLists SET Codes='$codeList' WHERE Id=$id")
+      ENDIF
+      $codesAdd=False
+
+		CASE $codesNew
+			$B = False
+			IF Yesno("Do you want to Create a Code List?")
+				$input = ""
+				WHILE $input = ""
+					INPUT Msg="Enter New Code List Name:" VarName=$input
+					IF $input = ""
+						MSGOK Msg="You Must Enter a Name for the New Code List!"
+					ELSE 
+						$S = Sqlite("sql", "SELECT Label FROM CodesDB.CodeLists WHERE Label = " + Sqlquote($input))
+						IF $_SqlRows = 1
+							MSGOK Msg="The Code List, '$input' already exists. Please Enter a Unique Name."
+							$input = ""
+						ENDIF 
+					ENDIF 
+				ENDWHILE 
+
+		# Find smallest available gap for Id
+				$id = Sqlite("sql", "SELECT MIN(newid) FROM (SELECT 1 AS newid WHERE NOT EXISTS (SELECT 1 FROM CodesDB.CodeLists WHERE Id = 1) UNION ALL SELECT Id + 1 FROM CodesDB.CodeLists t1 WHERE NOT EXISTS (SELECT 1 FROM CodesDB.CodeLists t2 WHERE t2.Id = t1.Id + 1))")
+				IF $id = "" OR Val($id) = 0
+					$id = "1"
+				ENDIF
+
+		# Create the unique anchor
+				$pId = $input + "_" + Sqlite("sql", "SELECT strftime('%f','now')")
+
+		# 1. Add to CodeLists (external table)
+				$S = Sqlite("sql", "INSERT INTO CodesDB.CodeLists (Id, Label, Codes, PermanentId) VALUES ($id, " + Sqlquote($input) + ", '', '$pId')")
+
+		# 2. Add to DayTripPlans with DEFAULT values to prevent the RestorePlan crash
+		# Adjust the column order/names to match your table's setup routine
+				# $_sql = "INSERT INTO CodesDB.DayTripPlans (Id, Label, PermanentId, cboDatabase, cboView, cboFilter) VALUES ($id, " + Sqlquote($input) + ", '$pId', " + Sqlquote($_CurrentDatabase) + ", 'Planning', 'No Filter')"
+				# $S = Sqlite("sql", $_sql)
+
+		# Update UI
+				$S = Sqlite("sql", "SELECT Label FROM CodesDB.CodeLists")
+				$cboLists = Replace($_Crlf, ";", $S)
+				$frmMain = Editform($frmMain, "cboLists", "Values", $cboLists)
+				$cboLists = $input
+				$B = True
+			ENDIF 
+			$codesNew = False
+
+    CASE $codesClear # Clear Codes in CodeList for fresh start
+# Parameter: $codesClear=True
+      $S=Sqlite("sql","UPDATE CodesDB.CodeLists SET Codes='' WHERE Label="+Sqlquote($cboLists))
+      $codeList=""
+      $codesClear=False
+    CASE $codesDelete # Delete a CodeList
+# Parameter: $codesDelete=True
+      IF Yesno("Are you sure you want to Delete '$cboLists'?")
+        $id=Sqlite("sql","SELECT Id FROM CodesDB.CodeLists WHERE Label="+Sqlquote($cboLists))
+        $S=Sqlite("sql","DELETE FROM CodesDB.CodeLists WHERE Label="+Sqlquote($cboLists))
+        MSGOK Msg="The Code List '$cboLists' has been deleted"
+        $codeList=""
+        $S=Sqlite("sql","SELECT Label FROM CodesDB.CodeLists")
+        IF $_SqlRows<>0
+          $cboLists=Replace($_Crlf,";",$S)
+        ELSE 
+          $cboLists=""
+        ENDIF 
+        $frmMain=Editform($frmMain,"cboLists","Values",$cboLists)
+
+        $cboLists=Sqlite("sql","SELECT Label FROM CodesDB.CodeLists LIMIT 1")
+      ENDIF
+      $codesDelete=False
+  ENDCASE 
+
+ENDSUB 
+
+BEGINSUB Name=DuplicateCodes # Check that duplicate codes are not in a CodeList
+  $max=Regexcount(",",$codes) + 1
+  $N=1
+	WHILE $N<=$max
+		$code=Extract($codes,",",$N)
+		IF Not(Regex( $code, $codeList )) AND $code<>""
+			$codeList=$codeList+","+$code
+		ENDIF 
+		$N=$N+1
+	ENDWHILE 
+ENDSUB 
+
+BEGINSUB Name=Getfolder 
+# get the Folder name to put the vcard file out to.
+  WHILE $input="" 
+    INPUT Msg="Browse for a Folder $br or Enter a Folder Path $p Blank entries are not allowed"  VarName=$input Default="$folder" Browse="Folder" 
+    $folder=$input
+# If the user entered a folder
+    IF Len($folder) <> 0 And $folder <> "\" 
+      IF Right($folder,1) <> "\" 
+        $folder=$folder+"\" 
+      ENDIF 
+#Does this folder exist?
+      $file=Putfile($folder + "test.txt","Need a file to delete") 
+# If no folder exists, create it with DOS command
+      IF Left($file,7)="*Error*" 
+        $S=Quote($folder) 
+        $comspec=Getenvv("comspec") 
+        RUNPGM Pgm=$comspec Parms=/c Md $S Wait=Yes 
+        $file=Putfile($folder + "test.txt","Need a file to delete") 
+				FILEERASE File=$folder*.* 
+      ENDIF
+
+    ENDIF     
+  ENDWHILE
+	$input="" 
+ENDSUB
+
+# An enhanced Sqltohtml process for displaying tables along with additional HTML
+BEGINSUB Name=Sqltohtml 
+# Valid parameters
+ #  $$_Sql="SELECT statement"
+ #  $html="<h1>Title</h1><p>Plus any HTML <a href='xxx' target='_blank'>link</a>. Use emmet in Test.html.</p><pre>is blue but can be inline styled to #800 for dark red</pre>"
+  $htmlData=Sqlite("sql",$_Sql,"Headings=Yes")
+  IF $htmlData<>""
+    $htmlData=Replace(chr(13)+chr(10),"@#@#@#@#",$htmlData) 
+    $htmlData=Replace(chr(10),"<br>",$htmlData)
+    $htmlData=Replace("@#@#@#@#",chr(13)+chr(10),$htmlData) 
+    $htmlData=Sqltohtml("$htmlData","</b><style type='text/css'>div { background: #fff; width:100%; } table{width:90%;margin-left:5%;margin-bottom:1em;} table:first-child { width:80%; margin:0 auto; } table:first-child .rows{ background: #fff; font-size:1em !important;} pre{font-size:1.3em;color:#00008B}</style><div align='left' style='margin:0 auto; width:80%;'>$html</div><b>","y") 
+  ELSE
+    MSGOK Msg="No data was returned by this SQL query.$p $_Sql"
+  ENDIF
+ENDSUB 
+
+BEGINSUB Name=CalculateTime # Returns hrs mins secs given seconds or milliSeconds
+# Need to set $milliSeconds or $seconds before calling this sub
+
+# convert to seconds
+  IF $milliSeconds<>0
+    $seconds=$milliSeconds/1000
+  ENDIF 
+#  ENDIF milliSeconds conversion  
+
+# convert to hours minutes and seconds
+  IF $seconds<>0
+    $hrs=Int($seconds/3600)
+    $mins=Int(Frac($seconds/3600)*60)
+    $secs=Int(Frac((($seconds/3600)*60)-$mins)*60)
+  ENDIF 
+#  ENDIF Hrs, mins, secs calculations
+
+# Reset ready for next call
+  $milliSeconds=0
+  $seconds=0
+
+ENDSUB # CalculateTime
+
+BEGINSUB Name=GetCachesByCodes # Dynamic Get Caches by code Processer
+# Valid parameters
+ # $_Sql<>"" then extract codes. $_Sql="" then $codes already populated
+ # $codes: Comma-separated list of GC codes
+ # $fullformat=True
+ # $fullformat=$rbFull
+ # $edtlogs="6"
+ # BlockSize may need to be Declared and assigned a values
+
+# Set BlockSize if empty or too big
+  IF $blockSize="" Or Val($blockSize)>10000
+    $blockSize="10000"
+  ENDIF # Check BlockSize
+
+# Just enough Logs for Full format requests.
+  IF $edtlogs="" And $fullformat
+    $edtlogs="4" # Ignored if Default Lite format used
+  ENDIF 
+  IF Val($edtLogs)>30
+    $edtlogs="30"
+  ENDIF # Check log size
+
+  IF $fullformat
+    $liteformat=False
+  ELSE # Lite format is default
+    $liteformat=True
+    $fullformat=False
+  ENDIF # Check format
+  IF $_Sql<>""
+# format SQL rows into comma separated list
+    $S=Sqlite("sql",$_Sql)
+    $S=REPLACE($_Crlf,",",$S)
+  ELSE # Assign formatted codes to $S for maipulation
+    $S=$codes
+  ENDIF # Check if $codes is populated, otherwise format codes for import
+
+  REPEAT # UNTIL $N=0
+
+# Get position up to $blockSize
+    $N=Regexpos(",",$S,Val($blockSize))
+
+# Extract codes in Blocksize batches for Import
+    IF $N>0
+# Get block of codes
+      $codes=Substr($S,1,$N-1)
+# Rinse block from $S
+      $S=Substr($S,$N+1,0)
+    ELSE # Get the remaining codes
+      $codes=$S
+    ENDIF 
+
+# Save GcGeocachesCodes template
+    $gcGeocachesTemp=$gcGeocachesCodes
+
+# Update template with dynamic values
+    $GcGeocachesCodes=REPLACE("!!Logs!!","$edtlogs",$gcGeocachesCodes)
+    $GcGeocachesCodes=REPLACE("!!Full!!","$fullformat",$gcGeocachesCodes)
+    $GcGeocachesCodes=REPLACE("!!Lite!!","$liteformat",$gcGeocachesCodes)
+
+# Use $gcGeocachesCodes <MACRO> settings
+    MACROSET Dialog=Gcgeocaches Varname=$gcGeocachesCodes Name=<MACRO>
+
+# Get caches for $codes
+    GCGETCACHES Settings=<MACRO> Showsummary=No Gccodes=$codes
+
+# Restore template
+    $GcGeocachesCodes=$gcGeocachesTemp
+
+  UNTIL $N=0
+
+ENDSUB 
+
+BEGINSUB Name=CleanUp # Tidy up before closing Macro
+# Persist settings before closing
+	IF $macSet <> ""
+		MACSETTINGS Type=S Vars=$macSettingVars File=$pathCWuser\$macSet
+	ENDIF
+
+# Restore SplitScreen and DualScreen
+	IF $splitScreen
+		SPLITSCREEN Display=On
+	ENDIF 
+	IF $dualScreen
+		DUALSCREEN Display=On
+	ENDIF 
+
+# Belts and braces to prevent Database locks
+  IF InTransaction()
+    TRANSACTION Action=End
+  ENDIF 
+
+# Resync any outstanding SQLite updates with GSAK and also prevents Database locks
+  RESYNC 
+
+# Resync any Log updates
+  RESYNCLOGS
+# Fix a bug when ADDNEW has been used
+	IF $_DbCount<>0
+		TABLE Active=Corrected scope=parent
+		MACRODELETE Action=Delcurrent
+		MACRODELETE Action=commit
+		TABLE Active=caches
+	ENDIF
+
+# Close any SQLite connections
+  $S=sqlite("Close")
+
+# Update grid
+  SPEEDMODE Status=refresh
+ENDSUB 
+
+<Data> VarName=$moveCopy
+  [TfmMove]
+  rbtMove.Checked=!!rbtMove!!
+  rbtCopy.Checked=!!rbtCopy!!
+  rbtAddIgnore.Checked=False
+  rbtExistIgnore.Checked=True
+  rbtReplace.Checked=!!rbtReplace!!
+  rbtAdd.Checked=!!rbtAdd!!
+	rbtAddFlag.Checked=!!rbtAddFlag!!
+  chkDisplay.Checked=False
+  cbxDestination.Text=!!DestinationDB!!
+  rbtCustomIgnore.Checked=False
+  rbtCustomSync.Checked=True
+<EndData>
+
+<Data> VarName=$htmlFile
+<!doctype html><html lang='en'><head><meta charset='UTF-8'><title>Clan Wallace !!Title!!</title><style>body {font-family: Verdana,sans-serif;font-size: 1em; line-height: 1.5; } background: #ccf; } header { text-align:center; margin:0; } .main-content { background: #eee; width:70%; margin:1em auto; padding:3em; border:1px solid #004; -webkit-box-shadow:0 0 80px 5px #114;box-shadow:0 0 80px 5px #114; border-radius:10px; color:#333; } h1{text-align:center} h1,h2,h3 {color:#0400B1} table {margin:1em auto;border:1px solid #004;border-collapse: collapse; width: 90%} tbody tr:nth-child(odd) {background-color: #e2e2f2;} th { padding-top: 12px; padding-bottom: 12px; text-align: left; background-color: #118; color: white; } td,th { border: 1px solid #ddd; padding: 8px; }td:first-child {width: 50%;}.fluid { height: auto;max-width: 200px}</style></head><body><div class='site'><header><img src='https://s3.amazonaws.com/gs-geo-images/738873bf-f9c7-4fcb-bf4b-479c06519ff4_l.png' class='fluid' alt='Freedom!' title='Freedom!' width='120' style='float:left'><img src='https://s3.amazonaws.com/gs-geo-images/9876efe3-29d6-45e6-a565-e58cde20523b_l.jpg' class='fluid' alt='Lets Go Geocaching' title='Lets Go Geocaching' width='160'  style='float:right'><h1>!!Title!!</h1></header><div class='main-content' style='overflow-x:auto;'><table><thead><tr><th>Status</th><th>Value</th></tr></thead><tbody>!!Status!!</tbody></table>!!Content!!</div></div></body></html>
+<EndData>
+
+# Locations Selection form
+<Data> VarName=$frmLocation
+Name=frmLocation
+  Type=form
+  Caption=Locations
+  Height=200
+  Width=209
+
+Name=grpLocations
+  Type=Groupbox
+  Caption=Select a Saved Location from List
+  Height=153
+  Left=8
+  Top=8
+  Width=185
+  Taborder=2
+
+Name=cboLocations
+  Type=Combobox
+  Container=grpLocations
+  Exitonchange=Yes
+  Height=21
+  Left=8
+  Top=24
+  Values=$locationsList
+  Width=161
+  Taborder=0
+
+<enddata>
+
+DECLARE Var=$advData Type=String
+DECLARE Var=$AdvDB Type=String
+DECLARE Var=$AdvFindsDB Type=String
+DECLARE Var=$ALprefix Type=String
+DECLARE Var=$apiCaption Type=String
+DECLARE Var=$apiError Type=Boolean
+DECLARE Var=$apiLog Type=String
+DECLARE Var=$apiNoData Type=Boolean
+DECLARE Var=$apiTotal Type=Numeric
+DECLARE Var=$archivedCoreCode Type=String
+DECLARE Var=$award Type=String
+DECLARE Var=$B Type=Boolean
+DECLARE Var=$blockSize Type=String
+DECLARE Var=$br Type=String
+DECLARE Var=$cacheId Type=String
+DECLARE Var=$cacheTotal Type=Numeric
+DECLARE Var=$cacheType Type=String
+DECLARE Var=$cboDatabase Type=String
+DECLARE Var=$cboFound Type=String
+DECLARE Var=$cboLists Type=String
+DECLARE Var=$cboListsValues Type=String
+DECLARE Var=$cboRadius Type=String
+DECLARE Var=$cboView Type=String
+DECLARE Var=$centrePoint Type=String
+DECLARE Var=$check Type=Boolean
+DECLARE Var=$chkAllRegions Type=Boolean
+DECLARE Var=$chkCoordinates Type=Boolean
+DECLARE Var=$chkElevation Type=Boolean
+DECLARE Var=$chkReports Type=Boolean
+DECLARE Var=$circle Type=Numeric
+DECLARE Var=$code Type=String
+DECLARE Var=$codeList Type=String
+DECLARE Var=$codes Type=String
+DECLARE Var=$codesAdd Type=Boolean
+DECLARE Var=$codesClear Type=Boolean
+DECLARE Var=$codesCombo Type=Boolean
+DECLARE Var=$codesDelete Type=Boolean
+DECLARE Var=$codesInList Type=Boolean
+DECLARE Var=$codesNew Type=Boolean
+DECLARE Var=$codesReplace Type=Boolean
+DECLARE Var=$colDelim Type=String
+DECLARE Var=$comspec Type=String
+DECLARE Var=$container Type=String
+DECLARE Var=$coordinates Type=String
+DECLARE Var=$coords Type=String
+DECLARE Var=$coordsDDM Type=String
+DECLARE Var=$coreCode Type=String
+DECLARE Var=$count Type=Numeric
+DECLARE Var=$countClb Type=Numeric
+DECLARE Var=$counties Type=Numeric
+DECLARE Var=$countrys Type=Numeric
+DECLARE Var=$created Type=String
+DECLARE Var=$crlfcvt Type=String
+DECLARE Var=$currentDatabase Type=String
+DECLARE Var=$CW Type=String
+DECLARE Var=$CWall Type=String
+DECLARE Var=$data Type=String
+DECLARE Var=$databaseList Type=String
+DECLARE Var=$debug Type=Boolean
+DECLARE Var=$deeplink Type=String
+DECLARE Var=$delay Type=Numeric
+DECLARE Var=$delimcvt Type=String
+DECLARE Var=$destinationDB Type=String
+DECLARE Var=$dnf Type=Boolean
+DECLARE Var=$done Type=Boolean
+DECLARE Var=$dualScreen Type=Boolean
+DECLARE Var=$edtLogs Type=String
+DECLARE Var=$errorMessage Type=String
+DECLARE Var=$favPoints Type=String
+DECLARE Var=$file Type=String
+DECLARE Var=$FiltersList Type=String
+DECLARE Var=$firstRun Type=Boolean
+DECLARE Var=$setup Type=Boolean
+DECLARE Var=$folder Type=String
+DECLARE Var=$FormExit Type=String
+DECLARE Var=$formExit Type=String
+DECLARE Var=$FoundLabTables Type=String
+DECLARE Var=$frmGetCoreCode Type=String
+DECLARE Var=$frmLocation Type=String
+DECLARE Var=$frmMain Type=String
+DECLARE Var=$full Type=Numeric
+DECLARE Var=$fullAt Type=String
+DECLARE Var=$fullformat Type=Boolean
+DECLARE Var=$fullMsg Type=String
+DECLARE Var=$fullReset Type=String
+DECLARE Var=$fullSeconds Type=Numeric
+DECLARE Var=$GcGeocachesCodes Type=String
+DECLARE Var=$gcGeocachesTemp Type=String
+DECLARE Var=$gcNote Type=String
+DECLARE Var=$hasCorrected Type=Boolean
+DECLARE Var=$height Type=Numeric
+DECLARE Var=$hints Type=String
+DECLARE Var=$home Type=String
+DECLARE Var=$hrs Type=Numeric
+DECLARE Var=$html Type=String
+DECLARE Var=$htmlContent Type=String
+DECLARE Var=$htmlData Type=String
+DECLARE Var=$htmlFile Type=String
+DECLARE Var=$htmlStatus Type=String
+DECLARE Var=$htmlTitle Type=String
+DECLARE Var=$id Type=String
+DECLARE Var=$import Type=Boolean
+DECLARE Var=$input Type=String
+DECLARE Var=$json Type=String
+DECLARE Var=$labFind Type=Numeric
+DECLARE Var=$LabsCSV Type=String
+DECLARE Var=$lastFind Type=Numeric
+DECLARE Var=$lat Type=String
+DECLARE Var=$latitude Type=String
+DECLARE Var=$lblCoords Type=String
+DECLARE Var=$LBprefix Type=String
+DECLARE Var=$left Type=Numeric
+DECLARE Var=$limitReset Type=String
+DECLARE Var=$lite Type=Numeric
+DECLARE Var=$liteAt Type=String
+DECLARE Var=$liteformat Type=Boolean
+DECLARE Var=$liteMsg Type=String
+DECLARE Var=$liteReset Type=String
+DECLARE Var=$liteSeconds Type=Numeric
+DECLARE Var=$location Type=String
+DECLARE Var=$locations Type=String
+DECLARE Var=$locationsList Type=String
+DECLARE Var=$log Type=String
+DECLARE Var=$logErased Type=Boolean
+DECLARE Var=$lon Type=String
+DECLARE Var=$longHtm Type=Boolean
+DECLARE Var=$longitude Type=String
+DECLARE Var=$macro Type=String
+DECLARE Var=$macSet Type=String
+DECLARE Var=$macSettingAll Type=String
+DECLARE Var=$macSettingVars Type=String
+DECLARE Var=$max Type=Numeric
+DECLARE Var=$maxClb Type=Numeric
+DECLARE Var=$maxRows Type=Numeric
+DECLARE Var=$milliSeconds Type=Numeric
+DECLARE Var=$mins Type=Numeric
+DECLARE Var=$moveCopy Type=String
+DECLARE Var=$msg Type=String
+DECLARE Var=$MyFindsDB Type=String
+DECLARE Var=$N Type=Numeric
+DECLARE Var=$name Type=String
+DECLARE Var=$NN Type=Numeric
+DECLARE Var=$offset Type=Numeric
+DECLARE Var=$optedOut Type=String
+DECLARE Var=$ownerId Type=String
+DECLARE Var=$ownerName Type=String
+DECLARE Var=$OwnerName Type=String
+DECLARE Var=$p Type=String
+DECLARE Var=$pathCW Type=String
+DECLARE Var=$pathCWuser Type=String
+DECLARE Var=$pathMacros Type=String
+DECLARE Var=$pause Type=Boolean
+DECLARE Var=$pId Type=String
+DECLARE Var=$placedDate Type=String
+DECLARE Var=$radius Type=String
+DECLARE Var=$radiusKM Type=Numeric
+DECLARE Var=$radiusM Type=Numeric
+DECLARE Var=$radiusMiles Type=String
+DECLARE Var=$rating Type=String
+DECLARE Var=$rbAdd Type=Boolean
+DECLARE Var=$rbAddFlag Type=Boolean
+DECLARE Var=$rbAll Type=Boolean
+DECLARE Var=$rbArchivesDelete Type=Boolean
+DECLARE Var=$rbArchivesMove Type=Boolean
+DECLARE Var=$rbCopy Type=Boolean
+DECLARE Var=$rbFoundDelete Type=Boolean
+DECLARE Var=$rbFoundMove Type=Boolean
+DECLARE Var=$rbFull Type=Boolean
+DECLARE Var=$rbLite Type=Boolean
+DECLARE Var=$rbMove Type=Boolean
+DECLARE Var=$rbReplace Type=Boolean
+DECLARE Var=$row Type=Numeric
+DECLARE Var=$rowDelim Type=String
+DECLARE Var=$rows Type=Numeric
+DECLARE Var=$rx Type=String
+DECLARE Var=$S Type=String
+DECLARE Var=$seconds Type=Numeric
+DECLARE Var=$secs Type=Numeric
+DECLARE Var=$shortDescription Type=String
+DECLARE Var=$shortHtm Type=Boolean
+DECLARE Var=$skip Type=Numeric
+DECLARE Var=$splitScreen Type=Boolean
+DECLARE Var=$SS Type=String
+DECLARE Var=$stageData Type=String
+DECLARE Var=$stages Type=String
+DECLARE Var=$states Type=Numeric
+DECLARE Var=$status Type=String
+DECLARE Var=$statusCode Type=Numeric
+DECLARE Var=$statusMessage Type=String
+DECLARE Var=$statusMsg Type=String
+DECLARE Var=$step Type=Boolean
+DECLARE Var=$suffix Type=String
+DECLARE Var=$symbol Type=String
+DECLARE Var=$take Type=Numeric
+DECLARE Var=$timer Type=String
+DECLARE Var=$title Type=String
+DECLARE Var=$today Type=String
+DECLARE Var=$top Type=Numeric
+DECLARE Var=$totalAdvCount Type=Numeric
+DECLARE Var=$unit Type=String
+DECLARE Var=$url Type=String
+DECLARE Var=$user Type=String
+DECLARE Var=$verb Type=String
+DECLARE Var=$versions Type=String
+DECLARE Var=$viewsList Type=String
+DECLARE Var=$width Type=Numeric
