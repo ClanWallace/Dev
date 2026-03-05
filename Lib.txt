@@ -170,6 +170,15 @@ IF At("ERROR: Could not fetch page:", $data)=0
   # ENDIF 
 # debug status=on
 	$done=False
+
+# Check if code exists
+	$B=Seek($code)
+	IF $B
+			# Generate unique code using next available CacheId
+			$cacheId=Sqlite("sql","SELECT MIN(n) AS NextCacheId FROM ( SELECT 1 AS n UNION SELECT CAST(CacheId AS UNSIGNED)+1 FROM Caches WHERE Code LIKE '$ALprefix%' AND CAST(CacheId AS UNSIGNED)<100000 ) x WHERE n NOT IN ( SELECT CAST(CacheId AS UNSIGNED) FROM Caches WHERE Code LIKE '$ALprefix%' );")
+			GOSUB Name=IDtoCoreCode62
+			$code="$ALprefix$coreCode"  # overwrite with unique one
+	ENDIF
   $B=Seek($code)
   IF NOT($B) # Make sure waypoint does not exist
     ADDNEW
@@ -344,6 +353,7 @@ BEGINSUB Name=CreateWaypointFromVars # Populate waypoint fields
 		ENDIF
 
 		$d_MacroFlag=True
+		$d_Lock=$lock
 
 	ELSE
 #		MSGOK Msg="'$code' already exists in this database!"
@@ -608,7 +618,6 @@ BEGINSUB Name=GcApi2
 	IF $verb="" # Only True on first call in macro
 		$verb="Get"
 	ENDIF
-	$S=Sqlite("sql","DROP TABLE IF EXISTS gcapi2;DROP TABLE IF EXISTS ApiMaster;")
 
 # Call API
   $data=GcApi2($url, $verb, $json, $apiCaption)

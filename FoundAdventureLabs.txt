@@ -110,15 +110,14 @@ BEGINSUB Name=FoundAdventuresForm
 ENDSUB
 
 BEGINSUB Name=FoundAdventureLabs
+
 # Attach CW database
   GOSUB Name=AttachCW
 
 # Import CSV data, but not when user has paused
-	IF Not($pause)
-		GOSUB Name=LabFindsCSV
-	ENDIF
+	GOSUB Name=LabFindsCSV
 
-# How many Found Labs do we have?
+# Total Completed Lab Stages
 	$labFinds=Val(Sqlite("sql","SELECT Count(*) FROM CW.FoundLabStages"))
 
 # How many of the Found Labs are in the AdventureFinds database?
@@ -131,9 +130,71 @@ BEGINSUB Name=FoundAdventureLabs
 		GOSUB Name=EndOfProccess
 	ENDIF
 
-	$pauseValue=Val($edtPause)
+# Only check for missing AdLabs in Adventures DB and copy if pause is false
+	IF Not($pause)
+# Check if Adventures have already been created in Adventures database
+		$S="$p Checking if Labs exist in '$advDB' database.$p"
+		GOSUB Name=ShowStatus
 
-	IF Not(YesNo(" The macro has processed $N of $labFinds Lab Stage Finds.$p Yes = Enable break reminders every $pauseValue Adventures.$br No = Run to completion."))
+# Identify AdvIds that are NOT yet in the AdventureFinds database
+		$codeList=Sqlite("sql","SELECT Group_ConCat(DISTINCT Quote(AdvId)) FROM CW.FoundLabStages WHERE AdvId NOT IN (SELECT Guid FROM Caches)")
+
+		IF $codeList <> ""
+			$S="$br Copying Missing Found Adventures to the '$AdvFindsDB' database.$p"
+			GOSUB Name=ShowStatus
+
+# Switch to Source Database to get the CoreCodes for the missing Adventures
+			DATABASE Name=$advDB Action=Select
+			$codeList=Sqlite("sql","SELECT Group_ConCat(DISTINCT Quote(SubStr(Code,3,4))) FROM Caches WHERE Guid IN ($codeList)")
+
+# Filter and Copy the Adventures + their Stages (Labs)
+			$_Sql="SubStr(Code,3,4) IN ($codeList)"
+			MFILTER Where=$_Sql
+			IF $_FilterCount > 0
+				$rbCopy=True
+				$destinationDB=$AdvFindsDB
+				GOSUB Name=MOVECOPY
+			ENDIF
+
+		ENDIF
+
+		DATABASE Name=$AdvFindsDB Action=Select
+		GOSUB Name=AttachCW
+	
+	ENDIF
+
+# ALWAYS RUN STATE CLASSIFICATION
+debug status=on
+# Update Actions with 'Locked' and 'Update' states
+	$S=Sqlite("sql", "UPDATE CW.FoundLabStages SET Action = CASE WHEN LogId IN (SELECT lLogId FROM Logs) THEN 'Locked' WHEN LabId IN (SELECT Guid FROM Caches) THEN 'Update' ELSE Action END")
+
+# Stats
+	$advsCompleted=Val(Sqlite("sql","SELECT Count(*) FROM Caches WHERE Code LIKE 'AL%' AND Lock	"))
+	$advsIncomplete=Val(Sqlite("sql","SELECT Count(*) FROM Caches WHERE Code LIKE 'AL%' AND Not Lock	"))
+
+# Unlock parents with pending work
+	$S=Sqlite("sql", "UPDATE Caches SET Lock = 0 WHERE Guid IN (SELECT DISTINCT AdvId FROM CW.FoundLabStages WHERE Action IN ('Create','Update'))")
+
+# Check for missing Adventures and create
+	$S="$br Check for and Create Missing Played Adventures $p"
+	GOSUB Name=ShowStatus
+
+# First AdvId to initiate WHILE loop
+	$advId=Sqlite("sql","SELECT AdvId FROM CW.FoundLabStages WHERE Action <> 'Locked' ORDER BY LabFind LIMIT 1")
+
+# Create Statistics
+	$advTotal=Val(Sqlite("sql","SELECT Count(DISTINCT AdvId) FROM CW.FoundLabStages WHERE Action <> 'Locked'"))
+	$labsProcessed=Sqlite("sql","SELECT Count(*) FROM CW.FoundLabStages WHERE LabId IN (SELECT Guid FROM Caches WHERE Code LIKE '$LBprefix%' AND Lock)")
+	$labsCreate=Sqlite("sql","SELECT Count(*) FROM CW.FoundLabStages WHERE Action='Create'")
+	$labsUpdate=Sqlite("sql","SELECT Count(*) FROM CW.FoundLabStages WHERE Action='Update'")
+	$labsLocked=Sqlite("sql","SELECT Count(*) FROM CW.FoundLabStages WHERE Action='Locked'")
+	$advsCreate=$advTotal - $advsIncomplete
+
+	$msg=" =========$br   STATISTICS$br =========$p Your Total Lab Stage Finds: $labFinds$br Played Adventures: $advTotal$br Adventures Completed: $advsCompleted$br Incomplete Adventures: $advsIncomplete$br Adventures to Create: $advsCreate$br Processed Lab Stages: $labsProcessed$br Lab Stages to Create: $labsCreate$br Lab Stages to Update: $labsUpdate$br Lab Stages Completed: $labsLocked$br $p Yes = Enable break reminders every $edtPause Adventures.$br Recommended on first run.$p No = Run to completion."
+
+# Offer choice to pause or continue to completion
+	$pauseValue=Val($edtPause)
+	IF Not(YesNo($msg))
 		$pauseValue=0
 		$pause=False
 	ELSE	
@@ -141,88 +202,43 @@ BEGINSUB Name=FoundAdventureLabs
 	ENDIF
 	MACSETTINGS Type=S Vars=$macSettingVars File=$pathCWuser\$macSet
 
-# Check if Adventures have already been created in Adventures database
-	$S="$p Checking if Labs exist in '$advDB' database.$p"
-	GOSUB Name=ShowStatus
-
-# Identify AdvIds that are NOT yet in the AdventureFinds database
-	$codeList=Sqlite("sql","SELECT Group_ConCat(DISTINCT Quote(AdvId)) FROM CW.FoundLabStages WHERE AdvId NOT IN (SELECT Guid FROM Caches)")
-
-	IF $codeList <> ""
-		$S="$p Copying Missing Found Adventures to the '$AdvFindsDB' database.$p"
-		GOSUB Name=ShowStatus
-
-# Switch to Source Database to get the CoreCodes for the missing Adventures
-		DATABASE Name=$advDB Action=Select
-		$codeList=Sqlite("sql","SELECT Group_ConCat(DISTINCT Quote(SubStr(Code,3,4))) FROM Caches WHERE Guid IN ($codeList)")
-
-# Filter and Copy the Adventures + their Stages (Labs)
-		$_Sql="SubStr(Code,3,4) IN ($codeList)"
-		MFILTER Where=$_Sql
-		IF $_FilterCount > 0
-			$rbCopy=True
-			$destinationDB=$AdvFindsDB
-			GOSUB Name=MOVECOPY
-		ENDIF
-
-	ENDIF
-
-# -----------------------------------
-# ALWAYS RUN STATE CLASSIFICATION
-# -----------------------------------
-	DATABASE Name=$AdvFindsDB Action=Select
-	GOSUB Name=AttachCW
-
-# Update Actions with 'Locked' and 'Update' states
-	$S=Sqlite("sql", "UPDATE CW.FoundLabStages SET Action = CASE WHEN LogId IN (SELECT lLogId FROM Logs) THEN 'Locked' WHEN LabId IN (SELECT Guid FROM Caches) THEN 'Update' ELSE Action END")
-
-# Unlock parents with pending work
-	$S=Sqlite("sql", "UPDATE Caches SET Lock = 0 WHERE Guid IN (SELECT DISTINCT AdvId FROM CW.FoundLabStages WHERE Action IN ('Create','Update'))")
-
-# Check for missing Adventures and create
-	$S=" Check for and Create Missing Played Adventures $p"
-	GOSUB Name=ShowStatus
-	$advId=Sqlite("sql","SELECT AdvId FROM CW.FoundLabStages WHERE Action <> 'Locked' ORDER BY LabFind LIMIT 1")
 	$advNew=0
-	$advTotal=Val(Sqlite("sql","SELECT Count(DISTINCT AdvId) FROM CW.FoundLabStages WHERE Action <> 'Locked'"))
-
 #	TRANSACTION Action=Begin
-	WHILE $advId <> ""
-# Check for next missing Adventure
-		$advId=Sqlite("sql","SELECT AdvId FROM CW.FoundLabStages WHERE Action <> 'Locked' LIMIT 1")
 
+	WHILE $advId <> ""
+	debug status=on
 # Counter for new Adventures to be processed
 		$advNew=$advNew+1
 
-		IF $pauseValue > 0 AND ($advNew MOD $pauseValue=0)
-
-			IF YesNo("Processing $advNew of $advTotal Adventures.$p Taking a break also allows you to reset the break interval, currently set to process $pauseValue Adventures before displaying this option.$p Do you wish to take a Break?")
-				GOSUB Name=TakeBreak
-			ENDIF
-
-		ENDIF
-debug status=on	
 # Get the Action.
 		$action=Sqlite("sql","SELECT Action FROM CW.FoundLabStages WHERE AdvId='$advId' LIMIT 1")
 
 # If any of it's Labs returns Create, the whole Adventure and its Labs need to be created
 		IF $action="Create"
 			GOSUB Name=CreateAdventureLabs
+# Update Action to Update
+			$S=Sqlite("sql", "UPDATE CW.FoundLabStages SET Action = 'Update' WHERE AdvId='$advId'")
+			$action=Sqlite("sql","SELECT Action FROM CW.FoundLabStages WHERE AdvId='$advId' LIMIT 1")
 		ENDIF
 
 # Now update the Lab Finds data
-		GOSUB Name=UpdateAdventureLabs
+		IF $action="Update"
+			GOSUB Name=UpdateAdventureLabs
+			$S=Sqlite("sql", "UPDATE CW.FoundLabStages SET Action = 'Locked' WHERE AdvId='$advId'")
+		ENDIF
 
-# Lock the Adventure in CW.FoundLabStages only if all Labs have been processed
-# This ensures we do not overwrite Locked or Update statuses prematurely
-    # $_Sql="UPDATE CW.FoundLabStages SET Action='Locked' WHERE AdvId='$advId' AND Action IN ('Update','Create') AND LabId IN (SELECT LabId FROM Caches WHERE Lock=1);"
-    # $S=Sqlite("sql", $_Sql)
-    
-# Also Lock it in GSAK so your startup sync works next time
-		# $coreCode=Sqlite("sql","SELECT SubStr(Code, 3, 4) FROM Caches WHERE Guid = '$advId'")
-		# $_Sql="UPDATE Caches SET Lock = 1 WHERE (Code = '$ALprefix$coreCode' OR Code GLOB '$LBprefix$coreCode*') AND Found = 1"
-		# $S=Sqlite("sql", $_Sql)
+# If user has chosen to pause, offer chance to take a break
+		IF $pauseValue > 0
+			IF $advNew MOD $pauseValue = 0
+				IF YesNo("Processing $advNew of $advsIncomplete Adventures.$p Taking a break also allows you to reset the break interval, currently set to process $edtPause Adventures before displaying this option.$p Do you wish to take a Break?")
+					GOSUB Name=TakeBreak
+			ENDIF
+		ENDIF
 
+	ENDIF
+
+# Check for next missing Adventure
+		$advId=Sqlite("sql", "SELECT AdvId FROM CW.FoundLabStages WHERE Action <> 'Locked' GROUP BY AdvId ORDER BY MIN(LabFind) LIMIT 1")
 	ENDWHILE
 
 #	TRANSACTION Action=End
@@ -233,8 +249,81 @@ debug status=on
 	GOSUB Name=EndOfProccess
 
 ENDSUB
+
+BEGINSUB Name=CreateAdventureLabs
+  $url="adventures/$advId"
+  IF $advId<>""
+    $apiCaption="Getting Adventure Lab Details"
+    GOSUB Name=GcApi2
+
+    IF Not($apiError)
+      $isArchived=False
+    ELSE
+      BEGINCASE
+        CASE $statusCode=403
+          IF $errorMessage="Can only retrieve public adventure data."
+            $isArchived=True
+          ENDIF
+        CASE $statusCode=404
+          IF $errorMessage="Failed to get results from adventures service" OR At("Adventure with id",$errorMessage)>0
+            $isArchived=True
+          ENDIF
+        CASE $statusCode=500
+          $isArchived=True
+        OTHERWISE
+          $isArchived=False
+      ENDCASE
+    ENDIF
+
+    $B=False
+    IF $isArchived
+      # Try this API to get the Deeplink
+      $S=GetUrl("https://api.lab2gpx.gcutils.de/lab2gpx-data/by-uuid/$advId")
+      $SS=RegExSub($_Quote+"url"+$_Quote+"\s*:\s*"+$_Quote+"(.*?)"+$_Quote,$S,1,1)
+      IF $SS<>""
+        $url="https://labs.geocaching.com/goto/"+$SS
+        $B=True
+        $isArchived=False   # <<< FIXED: mark as not archived if we got a valid deeplink
+      ENDIF
+
+      # Fallback for Deeplink. Get some data for the Input
+      IF Not($B)
+        $advName=Sqlite("sql","SELECT AdvName FROM CW.FoundLabStages WHERE AdvId='$AdvId' LIMIT 1")
+        MSGOK Msg="The Adventure '$advName', is not accessible from the API.$br This may work to automatically create the Adventure, otherwise, the macro will need your help to create the Adventure Labs.$p The macro will now open your Adventure Lab Finds.$br Try and locate the Adventure.$br Tip: Set the 'Adventures per page:' to 50 and select the previous  '<'   button to go to your oldest Finds, where Archives are more likely.$p     $advName$p Click on the Adventure Title.$br If it opens the Adventure page, Copy its URL.$br Return to the macro and paste the URL into the Input.$br Otherwise, if the Adventure page was not found, do not enter anything, as this will cause an error.$p Do not worry, the macro will help you create your Archived Adventure Lab Finds if this attempt fails."
+        WEB Url="https://labs.geocaching.com/logs"
+
+        INPUT Msg="Enter the WHOLE URL for the '$advName' Adventure (or leave blank if no Adventure page was found):" VarName=$input
+        $url=$input
+
+        IF RegEx("^https:\/\/labs\.geocaching\.com\/goto\/.+$",$url)
+          $isArchived=False
+          $B=True
+        ELSE
+          MSGOK Msg="Sorry, Adventure '$advName' is not available in the API or from your Adventure Lab Finds web page.$p We need to try another way to create this Adventure and its Labs."
+          $isArchived=True
+        ENDIF
+      ENDIF
+    ENDIF
+
+    IF $isArchived
+      GOSUB Name=CreateArchivedAdventure
+    ELSE
+      # API call was good or we got valid deeplink
+      IF Not($B)
+        $url=Sqlite("sql","SELECT deepLink FROM ApiMaster")
+      ENDIF
+
+      $deepLink=RegExSub("^https:\/\/labs\.geocaching\.com\/goto\/(.+)$",$url,1,1)
+      GOSUB Name=AdvUTF8
+    ENDIF
+
+    SHOWSTATUS Display=Off
+  ELSE
+    MSGOK Msg="Enter an Adventure ID"
+  ENDIF
+ENDSUB
  
-BEGINSUB Name=CreateAdventureLabs # Create a Single Adventure and its Labs
+BEGINSUB Name=CreateAdventureLabsOld # Create a Single Adventure and its Labs
 	$url="adventures/$advId"
 	IF $advId<>""
 		$apiCaption="Getting Adventure Lab Details"
@@ -377,9 +466,6 @@ BEGINSUB Name=CreateArchivedAdventure
 # Add Adventure Waypoint
   GOSUB Name=CreateWaypointFromVars ##8
 
-###	$d_UserData=""
-###	GOSUB Name=Update
-
 # Create lab stages in a circle around the Adventure location
   $offset=360/Val($stages)
   $ALDesc=$longDescription
@@ -395,11 +481,7 @@ BEGINSUB Name=CreateArchivedAdventure
 		$labName=$name
 		$labImage=Extract($S,";",3)
 		$labImage="https://gsmediadata.blob.core.windows.net/mediacontainer/$labImage"
-###		$stageFind=Extract($S,";",4)
-###		$foundByMeDate=Extract($S,";",5)
-###		$logId=Val(Extract($S,";",6))
-###		$gcNote=Extract($S,";",7)
-		$action="Update" ### Extract($S,";",8) ###
+
 		$LBDesc="<h3>Note</h3><p>Unfortunately, no descriptions are available for Archived Found Lab Stages.</p><p>You may have these Lab Stages that have their descriptions in some other database from the time before the API did not have all the needless restrictions applied.</p><p>If so, you could edit and update them for the sake of completeness.</p>"
 
 		$bearing=$offset*$lab
@@ -432,7 +514,6 @@ BEGINSUB Name=CreateArchivedAdventure
 
 # Update Adventure Waypoint Find
 		$d_UserData=NumToStr($labFind)
-###		GOSUB Name=Update
 
     $lab=$lab+1
     $labFind=$labFind+1
@@ -533,21 +614,22 @@ BEGINSUB Name=LabDescription
 ENDSUB
 
 BEGINSUB Name=UpdateAdventureLabs
+debug status=on
 # Total number of stages (ALL)
 	$labs=Val(Sqlite("sql", "SELECT Max(StageFind) FROM CW.FoundLabStages WHERE AdvId='$advId'"))
 
-	IF $labs=0
-			RETURN
-	ENDIF
-
 # Store the AdvFind for the Adventure waypoint
 	$parentAdvFind = Val(Sqlite("sql", "SELECT AdvFind FROM CW.FoundLabStages WHERE AdvId='$advId' LIMIT 1"))
+
+	$advName=Sqlite("sql", "SELECT AdvName FROM CW.FoundLabStages WHERE AdvId='$advId' LIMIT 1")
+	$S="$p $advNew. Adventure '$advName'$p$br"
+	GOSUB Name=ShowStatus
 
 # Process Labs needing Update/Create
 	$lab=1
 	WHILE $lab <= $labs
 
-    $data=Sqlite("sql", "SELECT LabId, AdvFind, LabFind, FoundByMeDate, GcNote, LogId, AdvName||' - '||LabName FROM CW.FoundLabStages WHERE AdvId='$advId' AND StageFind=$lab AND Action IN ('Update','Create')")
+    $data=Sqlite("sql", "SELECT LabId, AdvFind, LabFind, FoundByMeDate, GcNote, LogId, AdvName||' - '||LabName FROM CW.FoundLabStages WHERE AdvId='$advId' AND StageFind=$lab")
 
     $labName=Extract($data,";",7)
     $labId=Extract($data,";",1)
@@ -578,6 +660,7 @@ BEGINSUB Name=UpdateAdventureLabs
 
 				$d_Symbol="Geocache Found"
 				$d_GcNote=Extract($data,";",5)
+				$d_Lock=True
 
 				$logId=Val(Extract($data,";",6))
 				$log="Thanks $ownerName for the Adventure Lab."
@@ -615,8 +698,7 @@ BEGINSUB Name=UpdateAdventureLabs
 		$d_Lock=True # Update here
 
 	ENDIF
-
-	CANCELFILTER
+	$S=Sqlite("sql","SELECT Count(*) FROM CW.FoundLabStages WHERE AdvId='$advId' AND Action <> 'Locked'")
 
 ENDSUB
 
@@ -715,7 +797,53 @@ BEGINSUB Name=Report
 	ENDIF
 	ENDSUB
 
-BEGINSUB Name=LabFindsCSV # Create CW.FoundLabStages from LabFinds.csv 	
+BEGINSUB Name=LabFindsCSV
+
+# Path to CSV file
+  $file="$Download\labfinds.csv"
+
+# Only download CSV if not paused
+  IF Not($pause)
+
+    $url="https://labs.geocaching.com/logs"
+    WEB Url=$url
+
+    MSGOK Msg=" Select 'Ok' to continue after your Adventure Lab Finds have downloaded."
+
+    $S="$p Initialising and updating data tables.$br Please wait.$p"
+    GOSUB Name=ShowStatus
+
+    IF FileExists($file)
+
+      $SS=GetFile("$file")
+      $SS=Replace(chr(34), "", $SS)
+      $SS=Replace("~quote~", "", $SS)
+
+      $S=Sqlite("sql", $LabsCSV)
+      $S=Sqlite("IMPORT", $SS, "table=CW.LabsCSV delim=, delimcvt=~comma~ crlfcvt=~CrLf~")
+
+    ELSE
+      MSGOK Msg="There is no LabFinds.csv file to process."
+      GOSUB Name=FoundAdventuresForm
+      EXIT
+    ENDIF
+
+  ENDIF
+
+
+# ALWAYS rebuild Found tables (even in pause mode)
+
+  TRANSACTION Action=Begin
+  $SS=$FoundLabTables
+  $FoundLabTables=REPLACE("!!LB!!",$LBprefix,$FoundLabTables)
+  $FoundLabTables=REPLACE("!!AL!!",$ALprefix,$FoundLabTables)
+  $S=Sqlite("sql", $FoundLabTables)
+  $FoundLabTables=$SS
+  TRANSACTION Action=End
+
+ENDSUB
+
+BEGINSUB Name=LabFindsCSVOld # Create CW.FoundLabStages from LabFinds.csv 	
 
 # Path to CSV file
   $file="$Download\labfinds.csv"
@@ -803,7 +931,7 @@ BEGINSUB Name=Filter
 		IF $_FilterCount=0
 			MSGOK Msg="There are no $msg."
 		ELSE
-			MSGOK Msg="Filter set for '$msg'"
+#			MSGOK Msg="Filter set for '$msg'"
 			GOSUB Name=CleanUp
 			CANCEL
 		ENDIF		
@@ -1675,6 +1803,14 @@ CREATE TABLE CW.LabsCSV(
 <EndData>
 
 BEGINSUB Name=Declarations
+DECLARE Var=$advsCompleted Type=Numeric
+DECLARE Var=$advsIncomplete Type=Numeric
+DECLARE Var=$advsCreate Type=Numeric
+DECLARE Var=$labsProcessed Type=String
+DECLARE Var=$labsCreate Type=String
+DECLARE Var=$labsUpdate Type=String
+DECLARE Var=$labsLocked Type=String
+
 DECLARE Var=$action Type=String
 DECLARE Var=$advFind Type=Numeric
 DECLARE Var=$advFinds Type=Numeric
