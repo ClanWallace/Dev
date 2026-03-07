@@ -180,7 +180,7 @@ BEGINSUB Name=FoundAdventureLabs
 		GOSUB Name=ShowStatus
 
 # First AdvId to initiate WHILE loop
-		$advId=Sqlite("sql","SELECT AdvId FROM CW.FoundLabStages WHERE Action <> 'Locked' ORDER BY LabFind LIMIT 1")
+		$advId=Sqlite("sql","SELECT F.AdvId FROM CW.FoundLabStages F JOIN Caches C ON C.Guid = F.AdvId WHERE C.Lock = 0 GROUP BY F.AdvId ORDER BY MIN(F.LabFind) LIMIT 1")
 
 # Create Statistics
 		$advTotal=Val(Sqlite("sql","SELECT Count(DISTINCT AdvId) FROM CW.FoundLabStages WHERE Action <> 'Locked'"))
@@ -236,13 +236,20 @@ MSGOK Msg=" advId=$advId$br advNew = $advNew$br pause = $pause$br pauseValue = $
 		ENDIF
 
 # Now update the Lab Finds data
-		IF $action="Update"
+	IF $action="Update"
+		GOSUB Name=UpdateAdventureLabs
+		$S=Sqlite("sql", "UPDATE CW.FoundLabStages SET Action = 'Locked' WHERE AdvId='$advId'")
+	ELSE
+		$coreCode=Sqlite("sql", "SELECT SubStr(Code,3,4)  FROM Caches WHERE Guid='$advId'")
+		$N=Val(Sqlite("sql", "SELECT Count(*) FROM Caches WHERE Code GLOB '*$coreCode*'   AND User3 IS NOT NULL   AND TRIM(User3) != ''"))
+		IF $N=0
 			GOSUB Name=UpdateAdventureLabs
 			$S=Sqlite("sql", "UPDATE CW.FoundLabStages SET Action = 'Locked' WHERE AdvId='$advId'")
 		ENDIF
+	ENDIF
 
 # Check for next missing Adventure
-		$advId=Sqlite("sql", "SELECT AdvId FROM CW.FoundLabStages WHERE Action <> 'Locked' GROUP BY AdvId ORDER BY MIN(LabFind) LIMIT 1")
+		$advId=Sqlite("sql","SELECT F.AdvId FROM CW.FoundLabStages F JOIN Caches C ON C.Guid = F.AdvId WHERE C.Lock = 0 GROUP BY F.AdvId ORDER BY MIN(F.LabFind) LIMIT 1")
 
 # If user has chosen to pause, offer chance to take a break
 		IF $pause
@@ -1701,6 +1708,7 @@ CREATE TABLE CW.FoundLabStages(
 
 CREATE INDEX CW.idx_FoundLabStages_AdvId_Action ON FoundLabStages (AdvId, Action);
 CREATE INDEX CW.idx_FoundLabStages_AdvId_StageFind ON FoundLabStages (AdvId, StageFind);
+CREATE INDEX CW.idx_FoundLabStages_AdvId ON FoundLabStages(AdvId);
 
 -- 2. Populate from the CSV import table
 INSERT INTO CW.FoundLabStages (
@@ -1714,6 +1722,8 @@ SELECT
   FoundByMeDate, LogId,
   'Find '||StageFind||' ( Overall Find '||LabFind||' ) for Adventure '||AdvFind
 FROM CW.LabsCSV;
+
+CREATE INDEX IF NOT EXISTS idxCachesGuid ON Caches(Guid);
 
 <EndData>
 
