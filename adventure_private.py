@@ -63,8 +63,12 @@ def html_numeric_entities(text: str) -> str:
             out.append(f"&#x{code:X};")
     return "".join(out)
 
-def sanitize_field(text: str) -> str:
-    """Replace delimiters with spaced versions to prevent parsing conflicts."""
+def sanitize_delimiter_field(text: str) -> str:
+    """Sanitize fields to prevent delimiter conflicts in GSAK extraction.
+    
+    Replaces || and |@| delimiters with spaced variants to prevent parsing errors
+    when GSAK extracts data using these delimiters.
+    """
     if not text:
         return ""
     return text.replace("||", "| |").replace("|@|", "| @ |")
@@ -131,7 +135,7 @@ def handle_private_request(handler):
     is_archived = str(basic.get("isArchived", False))
 
     owner_id = str(basic.get("ownerGeoAccountId", ""))
-    owner_plain = basic.get("ownerUsername", "")
+    owner_plain = sanitize_delimiter_field(basic.get("ownerUsername", ""))
     owner_html = prepare_html_field(owner_plain)
 
     fav = basic.get("ratingsAverage", 0)
@@ -142,8 +146,9 @@ def handle_private_request(handler):
 
     duration = basic.get("medianTimeToComplete", "")
 
-    long_raw = basic.get("description", "")
-    long_html = prepare_html_field(make_gc_links(long_raw))
+    long_html = prepare_html_field(make_gc_links(
+        sanitize_delimiter_field(basic.get("description", ""))
+    ))
 
     lat = basic.get("location", {}).get("latitude", "")
     lon = basic.get("location", {}).get("longitude", "")
@@ -228,7 +233,7 @@ def handle_private_request(handler):
         suf = str(lab).zfill(2)
 
         guid = stage.get("id", "")
-        stage_title_raw = stage.get("title", "")
+        stage_title_raw = sanitize_delimiter_field(stage.get("title", ""))
 
         LBname = f"{ALname} : S{lab} {stage_title_raw}"
         LBnameHtml = prepare_html_field(f"{ALnameHtml} : {stage_title_raw}")
@@ -252,7 +257,7 @@ def handle_private_request(handler):
         challengeType = (stage.get("challengeType") or "")
 
         qa = stage.get("questionToAnswer", {})
-        q = qa.get("question", "")
+        q = sanitize_delimiter_field(qa.get("question", ""))
         a = qa.get("answer", "") if "answer" in qa else stage.get("answer", "")
 
         answer_plain = "MultiChoice" if challengeType.lower() in ("multichoice","multiplechoice") else a
@@ -278,7 +283,9 @@ def handle_private_request(handler):
         message_plain = re.sub(r"\s+"," ", message_plain).strip()
         message_plain = re.sub(r"[^\x20-\x7E]", "", message_plain)
 
-        LBdescriptionHtml = prepare_html_field(make_gc_links(stage.get("description", "")))
+        LBdescriptionHtml = prepare_html_field(make_gc_links(
+            sanitize_delimiter_field(stage.get("description", ""))
+        ))
         LBshortDescriptionHtml = f'<h2 style="text-align: center">{ALnameHtml} : {stage_title_raw}</h2>'
         if q:
             LBshortDescriptionHtml += f'<p style="text-align: center"><b>Question</b>: {questionHtml}</p>'
