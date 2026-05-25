@@ -1,0 +1,244 @@
+=== WAYPOINT 1 (PARENT ADVENTURE) ===
+  1 | coreCode               | 1h6M
+  2 | cacheId                | 404014
+  3 | guid                   | 32d1fdb3-7bac-4b8b-ba61-2418dee3de60
+  4 | ALname                 | The Wonderful World of Wetherspoons in Portsmouth
+  5 | ALnameHtml             | The Wonderful World of Wetherspoons in Portsmouth
+  6 | visibility             | Public
+  7 | isArchived             | false
+  8 | ownerId                | 880140
+  9 | ownerName              | 1gowild
+ 10 | ownerNameHtml          | 1gowild
+ 11 | favPoints              | 4.6
+ 12 | users                  | 15
+ 13 | created                | 2025-11-20
+ 14 | placedDate             | 2025-11-20
+ 15 | duration               | 92
+ 16 | ALlongDescriptionHtml  | This AL celebrates the variety of Wetherspoons carpets.<br />
+<br />
+You DO NOT need to visit the headline location of this AL unless you want to enjoy the hospitality at the Isambard Kingdom Brunel in Guildhall Square.<br />
+<br />
+Wetherspoons carpets are a distinctive feature found in the chain of pubs across the UK, often sparking curiosity and debate among patrons. These carpets typically feature bold, intricate patterns and bright colours, sometimes blending floral motifs or, geometric designs. They are known for being rather eye-catching and quirky, often combining a somewhat vintage aesthetic with a touch of the eccentric.
+ 17 | lat                    | 50.797033333333
+ 18 | lon                    | -1.0926166666667
+ 19 | ALimage                | https://gsmediadata.blob.core.windows.net/mediacontainer/c6165a4c-049a-4a20-9650-6e95113bdf76
+ 20 | cacheType              | A
+ 21 | theme                  | DrivingTour
+ 22 | adventureType          | Nonsequential
+ 23 | hints                  | Sequence: Random - DrivingTour themed
+ 24 | hasCorrected           | True
+ 25 | dnf                    | False
+ 26 | stages                 | 5
+ 27 | gcNote                 | Ave: 4.6 rating from 15 Users for 5 Lab Stages. Duration about 92 mins
+ 28 | ALshortDescriptionHtml | <h2 style="text-align: center">The Wonderful World of Wetherspoons in Portsmouth<br />by<br />1gowild</h2>
+ 29 | ALsplitScreen          | <div style='font-family:verdana,arial,sans-serif'><div style='box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;padding:1em;margin:2em 0;'><img src='https://labs.geocaching.com/Content/images/al-logo-balloon.svg' align='absmiddle' alt='Adventure' title='Adventure' style='float:right;width:6em;'/><p><span style='background:#060;color:#fff;border-radius:5px;padding:3px 5px;'>Ave: 4.6 rating from 15 Users for 5 Lab Stages. Duration about 92 mins</span>&nbsp;&nbsp;<span style='background:#060;color:#fff;border-radius:5px;padding:3px 5px;'>Sequence: Random - DrivingTour themed</span></p><p>This AL celebrates the variety of Wetherspoons carpets.<br />
+<br />
+You DO NOT need to visit the headline location of this AL unless you want to enjoy the hospitality at the Isambard Kingdom Brunel in Guildhall Square.<br />
+<br />
+Wetherspoons carpets are a distinctive feature found in the chain of pubs across the UK, often sparking curiosity and debate among patrons. These carpets typically feature bold, intricate patterns and bright colours, sometimes blending floral motifs or, geometric designs. They are known for being rather eye-catching and quirky, often combining a somewhat vintage aesthetic with a touch of the eccentric.</p></div><p style='text-align: center;'><img src='https://gsmediadata.blob.core.windows.net/mediacontainer/c6165a4c-049a-4a20-9650-6e95113bdf76' style='max-width:80%; max-height:80%; border:6px solid white; border-radius:20px; box-shadow:5px 5px 7px rgba(0,0,0,0.5); '/></p></div>
+
+=== WAYPOINT 2 (STAGE 1) ===
+  1 | lab                    | 1
+  2 | suffix                 | 01
+  3 | guid                   | 57caf87a-bac7-4db9-b288-c4deaf007d4d
+  4 | LBname                 | The Wonderful World of Wetherspoons in Portsmouth : S1 The Lord Palmerston, Southsea
+  5 | LBnameHtml             | The Wonderful World of Wetherspoons in Portsmouth : The Lord Palmerston, Southsea
+  6 | lat                    | 50.7842
+  7 | lon                    | -1.089
+  8 | LBimage                | https://gsmediadata.blob.core.windows.net/mediacontainer/a996b4f2-faa8-47db-93f9-07945741f397
+  9 | geofence               | 50
+ 10 | challengeType          | MultiChoice
+ 11 | question               | What are Palmerston's forts built in the Solent often referred to as?
+ 12 | LBdescriptionHtml      | The design of Wetherspoons carpets can be surprisingly varied from one pub to another, with each location often sporting its own unique pattern, contributing to the feeling of a local, personalized establishment. Despite their vivid patterns, these carpets have become almost synonymous with the brand, with many regulars associating the distinctive designs with the cozy, no-frills environment that Wetherspoons pubs are known for. There&#x2019;s even a sense of humor in some of the designs, with patterns that might seem random or unusual, adding to the charm of the space.<br />
+<br />
+Some patrons even take to social media to share their love&#x2014;or bemusement&#x2014;of the carpets, leading to a sort of cult following for these often-overlooked details in the pub experience.<br />
+<br />
+Pub history<br />
+<br />
+Palmerston Road has been Southsea&#x2019;s main shopping street since its Victorian development. Thomas Ellis Owen was responsible for much of the planning and design of 19th-century Southsea. He is commemorated by Owens public house, originally named The Palmerston. Viscount (Lord) Palmerston served more than nine years as Prime Minister and died in office in 1865. He also had a series of forts built to protect Portsmouth harbour and its dockyard, now called &#x2018;Palmerston&#x2019;s Folly&#x2019;.
+ 13 | shortDescriptionHtml   | <h2 style="text-align: center">The Wonderful World of Wetherspoons in Portsmouth : The Lord Palmerston, Southsea</h2><p style="text-align: center"><b>Question</b>: What are Palmerston's forts built in the Solent often referred to as?</p>
+ 14 | longDescriptionHtml    | The design of Wetherspoons carpets can be surprisingly varied from one pub to another, with each location often sporting its own unique pattern, contributing to the feeling of a local, personalized establishment. Despite their vivid patterns, these carpets have become almost synonymous with the brand, with many regulars associating the distinctive designs with the cozy, no-frills environment that Wetherspoons pubs are known for. There&#x2019;s even a sense of humor in some of the designs, with patterns that might seem random or unusual, adding to the charm of the space.<br />
+<br />
+Some patrons even take to social media to share their love&#x2014;or bemusement&#x2014;of the carpets, leading to a sort of cult following for these often-overlooked details in the pub experience.<br />
+<br />
+Pub history<br />
+<br />
+Palmerston Road has been Southsea&#x2019;s main shopping street since its Victorian development. Thomas Ellis Owen was responsible for much of the planning and design of 19th-century Southsea. He is commemorated by Owens public house, originally named The Palmerston. Viscount (Lord) Palmerston served more than nine years as Prime Minister and died in office in 1865. He also had a series of forts built to protect Portsmouth harbour and its dockyard, now called &#x2018;Palmerston&#x2019;s Folly&#x2019;.
+ 15 | hasCorrected           | False
+ 16 | dnf                    | False
+ 17 | gcNote                 | 
+ 18 | LBsplitScreen          | <div style='font-family:verdana,arial,sans-serif'><div style='box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0,0,0,0.3) 0px 30px 60px -30px, rgba(10,37,64,0.35) 0px -2px 6px 0px inset;padding:1em;margin:2em 0;'><img src='file:///C:/PROGRA~2/gsak/images/cacheQ.gif' align='absmiddle' alt='Lab Stage' title='Lab Stage' style='float:right;'/><p><span style='background:#060;color:#fff;border-radius:5px;padding:3px 5px;'>Stage 1 of 5</span>&nbsp;&nbsp;<span style='background:#060;color:#fff;border-radius:5px;padding:3px 5px;'>Sequence: Random - DrivingTour themed</span>&nbsp;&nbsp;<span style='background:#060;color:#fff;border-radius:5px;padding:3px 5px;'>Geofence: 50 metres</span></p><div>The design of Wetherspoons carpets can be surprisingly varied from one pub to another, with each location often sporting its own unique pattern, contributing to the feeling of a local, personalized establishment. Despite their vivid patterns, these carpets have become almost synonymous with the brand, with many regulars associating the distinctive designs with the cozy, no-frills environment that Wetherspoons pubs are known for. There&#x2019;s even a sense of humor in some of the designs, with patterns that might seem random or unusual, adding to the charm of the space.<br />
+<br />
+Some patrons even take to social media to share their love&#x2014;or bemusement&#x2014;of the carpets, leading to a sort of cult following for these often-overlooked details in the pub experience.<br />
+<br />
+Pub history<br />
+<br />
+Palmerston Road has been Southsea&#x2019;s main shopping street since its Victorian development. Thomas Ellis Owen was responsible for much of the planning and design of 19th-century Southsea. He is commemorated by Owens public house, originally named The Palmerston. Viscount (Lord) Palmerston served more than nine years as Prime Minister and died in office in 1865. He also had a series of forts built to protect Portsmouth harbour and its dockyard, now called &#x2018;Palmerston&#x2019;s Folly&#x2019;.</div></div><p style='text-align: center;'><img src='https://gsmediadata.blob.core.windows.net/mediacontainer/a996b4f2-faa8-47db-93f9-07945741f397' style='max-width:80%; max-height:80%; border:6px solid white; border-radius:20px; box-shadow:5px 5px 7px rgba(0,0,0,0.5);'/></p><div style='font-family:verdana,arial,sans-serif'><div style='box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;padding:1em;margin:2em 0;'><img src='https://labs.geocaching.com/Content/images/al-logo-balloon.svg' align='absmiddle' alt='Adventure' title='Adventure' style='float:right;width:6em;'/><p><span style='background:#060;color:#fff;border-radius:5px;padding:3px 5px;'>Ave: 4.6 rating from 15 Users for 5 Lab Stages. Duration about 92 mins</span>&nbsp;&nbsp;<span style='background:#060;color:#fff;border-radius:5px;padding:3px 5px;'>Sequence: Random - DrivingTour themed</span></p><p>This AL celebrates the variety of Wetherspoons carpets.<br />
+<br />
+You DO NOT need to visit the headline location of this AL unless you want to enjoy the hospitality at the Isambard Kingdom Brunel in Guildhall Square.<br />
+<br />
+Wetherspoons carpets are a distinctive feature found in the chain of pubs across the UK, often sparking curiosity and debate among patrons. These carpets typically feature bold, intricate patterns and bright colours, sometimes blending floral motifs or, geometric designs. They are known for being rather eye-catching and quirky, often combining a somewhat vintage aesthetic with a touch of the eccentric.</p></div><p style='text-align: center;'><img src='https://gsmediadata.blob.core.windows.net/mediacontainer/c6165a4c-049a-4a20-9650-6e95113bdf76' style='max-width:80%; max-height:80%; border:6px solid white; border-radius:20px; box-shadow:5px 5px 7px rgba(0,0,0,0.5); '/></p></div></div>
+=== WAYPOINT 3 (STAGE 2) ===
+  1 | lab                    | 2
+  2 | suffix                 | 02
+  3 | guid                   | 272bdb8f-d928-4327-b912-a4b4684876cd
+  4 | LBname                 | The Wonderful World of Wetherspoons in Portsmouth : S2 The John Jacques, Fratton
+  5 | LBnameHtml             | The Wonderful World of Wetherspoons in Portsmouth : The John Jacques, Fratton
+  6 | lat                    | 50.798333333333
+  7 | lon                    | -1.07675
+  8 | LBimage                | https://gsmediadata.blob.core.windows.net/mediacontainer/001398dd-040c-44c9-8bbb-b5054dc2dae2
+  9 | geofence               | 20
+ 10 | challengeType          | MultiChoice
+ 11 | question               | At what age did John Jacques die?
+ 12 | LBdescriptionHtml      | The design of Wetherspoons carpets can be surprisingly varied from one pub to another, with each location often sporting its own unique pattern, contributing to the feeling of a local, personalized establishment. Despite their vivid patterns, these carpets have become almost synonymous with the brand, with many regulars associating the distinctive designs with the cozy, no-frills environment that Wetherspoons pubs are known for. There&#x2019;s even a sense of humor in some of the designs, with patterns that might seem random or unusual, adding to the charm of the space.<br />
+<br />
+Some patrons even take to social media to share their love&#x2014;or bemusement&#x2014;of the carpets, leading to a sort of cult following for these often-overlooked details in the pub experience.<br />
+<br />
+Pub history<br />
+<br />
+Previously a branch of the Portsea Island Mutual Co-operative Society (PIMCO), the name of this pub recalls PIMCO&#x2019;s former chief executive who died in 1995 aged 90. PIMCO was set up by a handful of volunteers in May 1873 &#x2013; the first Fratton Road shop opening in 1887. It was the first of many PIMCO premises in Fratton Road, including this site. From the end of World War II, PIMCO&#x2019;s driving force for 20 years was its chief executive John Jacques, later Lord Jacques of Portsea Island.
+ 13 | shortDescriptionHtml   | <h2 style="text-align: center">The Wonderful World of Wetherspoons in Portsmouth : The John Jacques, Fratton</h2><p style="text-align: center"><b>Question</b>: At what age did John Jacques die?</p>
+ 14 | longDescriptionHtml    | The design of Wetherspoons carpets can be surprisingly varied from one pub to another, with each location often sporting its own unique pattern, contributing to the feeling of a local, personalized establishment. Despite their vivid patterns, these carpets have become almost synonymous with the brand, with many regulars associating the distinctive designs with the cozy, no-frills environment that Wetherspoons pubs are known for. There&#x2019;s even a sense of humor in some of the designs, with patterns that might seem random or unusual, adding to the charm of the space.<br />
+<br />
+Some patrons even take to social media to share their love&#x2014;or bemusement&#x2014;of the carpets, leading to a sort of cult following for these often-overlooked details in the pub experience.<br />
+<br />
+Pub history<br />
+<br />
+Previously a branch of the Portsea Island Mutual Co-operative Society (PIMCO), the name of this pub recalls PIMCO&#x2019;s former chief executive who died in 1995 aged 90. PIMCO was set up by a handful of volunteers in May 1873 &#x2013; the first Fratton Road shop opening in 1887. It was the first of many PIMCO premises in Fratton Road, including this site. From the end of World War II, PIMCO&#x2019;s driving force for 20 years was its chief executive John Jacques, later Lord Jacques of Portsea Island.
+ 15 | hasCorrected           | False
+ 16 | dnf                    | False
+ 17 | gcNote                 | 
+ 18 | LBsplitScreen          | <div style='font-family:verdana,arial,sans-serif'><div style='box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0,0,0,0.3) 0px 30px 60px -30px, rgba(10,37,64,0.35) 0px -2px 6px 0px inset;padding:1em;margin:2em 0;'><img src='file:///C:/PROGRA~2/gsak/images/cacheQ.gif' align='absmiddle' alt='Lab Stage' title='Lab Stage' style='float:right;'/><p><span style='background:#060;color:#fff;border-radius:5px;padding:3px 5px;'>Stage 2 of 5</span>&nbsp;&nbsp;<span style='background:#060;color:#fff;border-radius:5px;padding:3px 5px;'>Sequence: Random - DrivingTour themed</span>&nbsp;&nbsp;<span style='background:#060;color:#fff;border-radius:5px;padding:3px 5px;'>Geofence: 20 metres</span></p><div>The design of Wetherspoons carpets can be surprisingly varied from one pub to another, with each location often sporting its own unique pattern, contributing to the feeling of a local, personalized establishment. Despite their vivid patterns, these carpets have become almost synonymous with the brand, with many regulars associating the distinctive designs with the cozy, no-frills environment that Wetherspoons pubs are known for. There&#x2019;s even a sense of humor in some of the designs, with patterns that might seem random or unusual, adding to the charm of the space.<br />
+<br />
+Some patrons even take to social media to share their love&#x2014;or bemusement&#x2014;of the carpets, leading to a sort of cult following for these often-overlooked details in the pub experience.<br />
+<br />
+Pub history<br />
+<br />
+Previously a branch of the Portsea Island Mutual Co-operative Society (PIMCO), the name of this pub recalls PIMCO&#x2019;s former chief executive who died in 1995 aged 90. PIMCO was set up by a handful of volunteers in May 1873 &#x2013; the first Fratton Road shop opening in 1887. It was the first of many PIMCO premises in Fratton Road, including this site. From the end of World War II, PIMCO&#x2019;s driving force for 20 years was its chief executive John Jacques, later Lord Jacques of Portsea Island.</div></div><p style='text-align: center;'><img src='https://gsmediadata.blob.core.windows.net/mediacontainer/001398dd-040c-44c9-8bbb-b5054dc2dae2' style='max-width:80%; max-height:80%; border:6px solid white; border-radius:20px; box-shadow:5px 5px 7px rgba(0,0,0,0.5);'/></p><div style='font-family:verdana,arial,sans-serif'><div style='box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;padding:1em;margin:2em 0;'><img src='https://labs.geocaching.com/Content/images/al-logo-balloon.svg' align='absmiddle' alt='Adventure' title='Adventure' style='float:right;width:6em;'/><p><span style='background:#060;color:#fff;border-radius:5px;padding:3px 5px;'>Ave: 4.6 rating from 15 Users for 5 Lab Stages. Duration about 92 mins</span>&nbsp;&nbsp;<span style='background:#060;color:#fff;border-radius:5px;padding:3px 5px;'>Sequence: Random - DrivingTour themed</span></p><p>This AL celebrates the variety of Wetherspoons carpets.<br />
+<br />
+You DO NOT need to visit the headline location of this AL unless you want to enjoy the hospitality at the Isambard Kingdom Brunel in Guildhall Square.<br />
+<br />
+Wetherspoons carpets are a distinctive feature found in the chain of pubs across the UK, often sparking curiosity and debate among patrons. These carpets typically feature bold, intricate patterns and bright colours, sometimes blending floral motifs or, geometric designs. They are known for being rather eye-catching and quirky, often combining a somewhat vintage aesthetic with a touch of the eccentric.</p></div><p style='text-align: center;'><img src='https://gsmediadata.blob.core.windows.net/mediacontainer/c6165a4c-049a-4a20-9650-6e95113bdf76' style='max-width:80%; max-height:80%; border:6px solid white; border-radius:20px; box-shadow:5px 5px 7px rgba(0,0,0,0.5); '/></p></div></div>
+=== WAYPOINT 4 (STAGE 3) ===
+  1 | lab                    | 3
+  2 | suffix                 | 03
+  3 | guid                   | 9fbfd655-3ffb-4629-ad73-600b8243f41b
+  4 | LBname                 | The Wonderful World of Wetherspoons in Portsmouth : S3 The Sir John Baker, North End
+  5 | LBnameHtml             | The Wonderful World of Wetherspoons in Portsmouth : The Sir John Baker, North End
+  6 | lat                    | 50.815383333333
+  7 | lon                    | -1.07955
+  8 | LBimage                | https://gsmediadata.blob.core.windows.net/mediacontainer/d53fa87a-6465-4ee7-b2b9-86738bb3b468
+  9 | geofence               | 30
+ 10 | challengeType          | MultiChoice
+ 11 | question               | What was John Baker known as?
+ 12 | LBdescriptionHtml      | The design of Wetherspoons carpets can be surprisingly varied from one pub to another, with each location often sporting its own unique pattern, contributing to the feeling of a local, personalized establishment. Despite their vivid patterns, these carpets have become almost synonymous with the brand, with many regulars associating the distinctive designs with the cozy, no-frills environment that Wetherspoons pubs are known for. There&#x2019;s even a sense of humor in some of the designs, with patterns that might seem random or unusual, adding to the charm of the space.<br />
+<br />
+Some patrons even take to social media to share their love&#x2014;or bemusement&#x2014;of the carpets, leading to a sort of cult following for these often-overlooked details in the pub experience.<br />
+<br />
+Pub history<br />
+<br />
+This pub is named after Sir John Baker who lived in North End House, close to this Wetherspoon pub. Sir John Baker, Lord Mayor of the Borough (1870 and 1875), was known as Honest John. He was a local MP, justice of the peace and chairman of the school board. Sir John was also the owner of several shops.
+ 13 | shortDescriptionHtml   | <h2 style="text-align: center">The Wonderful World of Wetherspoons in Portsmouth : The Sir John Baker, North End</h2><p style="text-align: center"><b>Question</b>: What was John Baker known as?</p>
+ 14 | longDescriptionHtml    | The design of Wetherspoons carpets can be surprisingly varied from one pub to another, with each location often sporting its own unique pattern, contributing to the feeling of a local, personalized establishment. Despite their vivid patterns, these carpets have become almost synonymous with the brand, with many regulars associating the distinctive designs with the cozy, no-frills environment that Wetherspoons pubs are known for. There&#x2019;s even a sense of humor in some of the designs, with patterns that might seem random or unusual, adding to the charm of the space.<br />
+<br />
+Some patrons even take to social media to share their love&#x2014;or bemusement&#x2014;of the carpets, leading to a sort of cult following for these often-overlooked details in the pub experience.<br />
+<br />
+Pub history<br />
+<br />
+This pub is named after Sir John Baker who lived in North End House, close to this Wetherspoon pub. Sir John Baker, Lord Mayor of the Borough (1870 and 1875), was known as Honest John. He was a local MP, justice of the peace and chairman of the school board. Sir John was also the owner of several shops.
+ 15 | hasCorrected           | False
+ 16 | dnf                    | False
+ 17 | gcNote                 | 
+ 18 | LBsplitScreen          | <div style='font-family:verdana,arial,sans-serif'><div style='box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0,0,0,0.3) 0px 30px 60px -30px, rgba(10,37,64,0.35) 0px -2px 6px 0px inset;padding:1em;margin:2em 0;'><img src='file:///C:/PROGRA~2/gsak/images/cacheQ.gif' align='absmiddle' alt='Lab Stage' title='Lab Stage' style='float:right;'/><p><span style='background:#060;color:#fff;border-radius:5px;padding:3px 5px;'>Stage 3 of 5</span>&nbsp;&nbsp;<span style='background:#060;color:#fff;border-radius:5px;padding:3px 5px;'>Sequence: Random - DrivingTour themed</span>&nbsp;&nbsp;<span style='background:#060;color:#fff;border-radius:5px;padding:3px 5px;'>Geofence: 30 metres</span></p><div>The design of Wetherspoons carpets can be surprisingly varied from one pub to another, with each location often sporting its own unique pattern, contributing to the feeling of a local, personalized establishment. Despite their vivid patterns, these carpets have become almost synonymous with the brand, with many regulars associating the distinctive designs with the cozy, no-frills environment that Wetherspoons pubs are known for. There&#x2019;s even a sense of humor in some of the designs, with patterns that might seem random or unusual, adding to the charm of the space.<br />
+<br />
+Some patrons even take to social media to share their love&#x2014;or bemusement&#x2014;of the carpets, leading to a sort of cult following for these often-overlooked details in the pub experience.<br />
+<br />
+Pub history<br />
+<br />
+This pub is named after Sir John Baker who lived in North End House, close to this Wetherspoon pub. Sir John Baker, Lord Mayor of the Borough (1870 and 1875), was known as Honest John. He was a local MP, justice of the peace and chairman of the school board. Sir John was also the owner of several shops.</div></div><p style='text-align: center;'><img src='https://gsmediadata.blob.core.windows.net/mediacontainer/d53fa87a-6465-4ee7-b2b9-86738bb3b468' style='max-width:80%; max-height:80%; border:6px solid white; border-radius:20px; box-shadow:5px 5px 7px rgba(0,0,0,0.5);'/></p><div style='font-family:verdana,arial,sans-serif'><div style='box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;padding:1em;margin:2em 0;'><img src='https://labs.geocaching.com/Content/images/al-logo-balloon.svg' align='absmiddle' alt='Adventure' title='Adventure' style='float:right;width:6em;'/><p><span style='background:#060;color:#fff;border-radius:5px;padding:3px 5px;'>Ave: 4.6 rating from 15 Users for 5 Lab Stages. Duration about 92 mins</span>&nbsp;&nbsp;<span style='background:#060;color:#fff;border-radius:5px;padding:3px 5px;'>Sequence: Random - DrivingTour themed</span></p><p>This AL celebrates the variety of Wetherspoons carpets.<br />
+<br />
+You DO NOT need to visit the headline location of this AL unless you want to enjoy the hospitality at the Isambard Kingdom Brunel in Guildhall Square.<br />
+<br />
+Wetherspoons carpets are a distinctive feature found in the chain of pubs across the UK, often sparking curiosity and debate among patrons. These carpets typically feature bold, intricate patterns and bright colours, sometimes blending floral motifs or, geometric designs. They are known for being rather eye-catching and quirky, often combining a somewhat vintage aesthetic with a touch of the eccentric.</p></div><p style='text-align: center;'><img src='https://gsmediadata.blob.core.windows.net/mediacontainer/c6165a4c-049a-4a20-9650-6e95113bdf76' style='max-width:80%; max-height:80%; border:6px solid white; border-radius:20px; box-shadow:5px 5px 7px rgba(0,0,0,0.5); '/></p></div></div>
+=== WAYPOINT 5 (STAGE 4) ===
+  1 | lab                    | 4
+  2 | suffix                 | 04
+  3 | guid                   | b53e095a-210e-4766-8bf8-ca6968cea31d
+  4 | LBname                 | The Wonderful World of Wetherspoons in Portsmouth : S4 The First Post, Cosham
+  5 | LBnameHtml             | The Wonderful World of Wetherspoons in Portsmouth : The First Post, Cosham
+  6 | lat                    | 50.844683333333
+  7 | lon                    | -1.0672833333333
+  8 | LBimage                | https://gsmediadata.blob.core.windows.net/mediacontainer/49531daa-80d0-4959-ade1-5b8a105f5acb
+  9 | geofence               | 30
+ 10 | challengeType          | MultiChoice
+ 11 | question               | Thomas Baker owned the premises in the 1800s. What type of shop was it?
+ 12 | LBdescriptionHtml      | The design of Wetherspoons carpets can be surprisingly varied from one pub to another, with each location often sporting its own unique pattern, contributing to the feeling of a local, personalized establishment. Despite their vivid patterns, these carpets have become almost synonymous with the brand, with many regulars associating the distinctive designs with the cozy, no-frills environment that Wetherspoons pubs are known for. There&#x2019;s even a sense of humor in some of the designs, with patterns that might seem random or unusual, adding to the charm of the space.<br />
+<br />
+Some patrons even take to social media to share their love&#x2014;or bemusement&#x2014;of the carpets, leading to a sort of cult following for these often-overlooked details in the pub experience.<br />
+<br />
+Pub history<br />
+<br />
+This former bookseller and stationer&#x2019;s store partially covers the site of two earlier buildings. On the left side (as you face the pub) was Curtis, the corn merchant, a three-storey property which dominated High Street until was it demolished in the 1960s. Baker and Sons chemist&#x2019;s shop was on the right-hand side. Established by Thomas Baker, in the 1840s, it was also the town&#x2019;s first post office. Baker was the postmaster until the 1890s.
+ 13 | shortDescriptionHtml   | <h2 style="text-align: center">The Wonderful World of Wetherspoons in Portsmouth : The First Post, Cosham</h2><p style="text-align: center"><b>Question</b>: Thomas Baker owned the premises in the 1800s. What type of shop was it?</p>
+ 14 | longDescriptionHtml    | The design of Wetherspoons carpets can be surprisingly varied from one pub to another, with each location often sporting its own unique pattern, contributing to the feeling of a local, personalized establishment. Despite their vivid patterns, these carpets have become almost synonymous with the brand, with many regulars associating the distinctive designs with the cozy, no-frills environment that Wetherspoons pubs are known for. There&#x2019;s even a sense of humor in some of the designs, with patterns that might seem random or unusual, adding to the charm of the space.<br />
+<br />
+Some patrons even take to social media to share their love&#x2014;or bemusement&#x2014;of the carpets, leading to a sort of cult following for these often-overlooked details in the pub experience.<br />
+<br />
+Pub history<br />
+<br />
+This former bookseller and stationer&#x2019;s store partially covers the site of two earlier buildings. On the left side (as you face the pub) was Curtis, the corn merchant, a three-storey property which dominated High Street until was it demolished in the 1960s. Baker and Sons chemist&#x2019;s shop was on the right-hand side. Established by Thomas Baker, in the 1840s, it was also the town&#x2019;s first post office. Baker was the postmaster until the 1890s.
+ 15 | hasCorrected           | False
+ 16 | dnf                    | False
+ 17 | gcNote                 | 
+ 18 | LBsplitScreen          | <div style='font-family:verdana,arial,sans-serif'><div style='box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0,0,0,0.3) 0px 30px 60px -30px, rgba(10,37,64,0.35) 0px -2px 6px 0px inset;padding:1em;margin:2em 0;'><img src='file:///C:/PROGRA~2/gsak/images/cacheQ.gif' align='absmiddle' alt='Lab Stage' title='Lab Stage' style='float:right;'/><p><span style='background:#060;color:#fff;border-radius:5px;padding:3px 5px;'>Stage 4 of 5</span>&nbsp;&nbsp;<span style='background:#060;color:#fff;border-radius:5px;padding:3px 5px;'>Sequence: Random - DrivingTour themed</span>&nbsp;&nbsp;<span style='background:#060;color:#fff;border-radius:5px;padding:3px 5px;'>Geofence: 30 metres</span></p><div>The design of Wetherspoons carpets can be surprisingly varied from one pub to another, with each location often sporting its own unique pattern, contributing to the feeling of a local, personalized establishment. Despite their vivid patterns, these carpets have become almost synonymous with the brand, with many regulars associating the distinctive designs with the cozy, no-frills environment that Wetherspoons pubs are known for. There&#x2019;s even a sense of humor in some of the designs, with patterns that might seem random or unusual, adding to the charm of the space.<br />
+<br />
+Some patrons even take to social media to share their love&#x2014;or bemusement&#x2014;of the carpets, leading to a sort of cult following for these often-overlooked details in the pub experience.<br />
+<br />
+Pub history<br />
+<br />
+This former bookseller and stationer&#x2019;s store partially covers the site of two earlier buildings. On the left side (as you face the pub) was Curtis, the corn merchant, a three-storey property which dominated High Street until was it demolished in the 1960s. Baker and Sons chemist&#x2019;s shop was on the right-hand side. Established by Thomas Baker, in the 1840s, it was also the town&#x2019;s first post office. Baker was the postmaster until the 1890s.</div></div><p style='text-align: center;'><img src='https://gsmediadata.blob.core.windows.net/mediacontainer/49531daa-80d0-4959-ade1-5b8a105f5acb' style='max-width:80%; max-height:80%; border:6px solid white; border-radius:20px; box-shadow:5px 5px 7px rgba(0,0,0,0.5);'/></p><div style='font-family:verdana,arial,sans-serif'><div style='box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;padding:1em;margin:2em 0;'><img src='https://labs.geocaching.com/Content/images/al-logo-balloon.svg' align='absmiddle' alt='Adventure' title='Adventure' style='float:right;width:6em;'/><p><span style='background:#060;color:#fff;border-radius:5px;padding:3px 5px;'>Ave: 4.6 rating from 15 Users for 5 Lab Stages. Duration about 92 mins</span>&nbsp;&nbsp;<span style='background:#060;color:#fff;border-radius:5px;padding:3px 5px;'>Sequence: Random - DrivingTour themed</span></p><p>This AL celebrates the variety of Wetherspoons carpets.<br />
+<br />
+You DO NOT need to visit the headline location of this AL unless you want to enjoy the hospitality at the Isambard Kingdom Brunel in Guildhall Square.<br />
+<br />
+Wetherspoons carpets are a distinctive feature found in the chain of pubs across the UK, often sparking curiosity and debate among patrons. These carpets typically feature bold, intricate patterns and bright colours, sometimes blending floral motifs or, geometric designs. They are known for being rather eye-catching and quirky, often combining a somewhat vintage aesthetic with a touch of the eccentric.</p></div><p style='text-align: center;'><img src='https://gsmediadata.blob.core.windows.net/mediacontainer/c6165a4c-049a-4a20-9650-6e95113bdf76' style='max-width:80%; max-height:80%; border:6px solid white; border-radius:20px; box-shadow:5px 5px 7px rgba(0,0,0,0.5); '/></p></div></div>
+=== WAYPOINT 6 (STAGE 5) ===
+  1 | lab                    | 5
+  2 | suffix                 | 05
+  3 | guid                   | afb47b3e-d69c-4e29-8cec-1d36263665a6
+  4 | LBname                 | The Wonderful World of Wetherspoons in Portsmouth : S5 The Sir Alec Rose, Port Solent
+  5 | LBnameHtml             | The Wonderful World of Wetherspoons in Portsmouth : The Sir Alec Rose, Port Solent
+  6 | lat                    | 50.840966666667
+  7 | lon                    | -1.0975833333333
+  8 | LBimage                | https://gsmediadata.blob.core.windows.net/mediacontainer/638c49f9-9af3-4b4c-b2c1-d2312053b287
+  9 | geofence               | 100
+ 10 | challengeType          | MultiChoice
+ 11 | question               | What was the name of the vessel Sir Alec Rose circumnavigated the globe in?
+ 12 | LBdescriptionHtml      | The design of Wetherspoons carpets can be surprisingly varied from one pub to another, with each location often sporting its own unique pattern, contributing to the feeling of a local, personalized establishment. Despite their vivid patterns, these carpets have become almost synonymous with the brand, with many regulars associating the distinctive designs with the cozy, no-frills environment that Wetherspoons pubs are known for. There&#x2019;s even a sense of humor in some of the designs, with patterns that might seem random or unusual, adding to the charm of the space.<br />
+<br />
+Some patrons even take to social media to share their love&#x2014;or bemusement&#x2014;of the carpets, leading to a sort of cult following for these often-overlooked details in the pub experience.<br />
+<br />
+Pub history<br />
+<br />
+Port Solent is the country&#x2019;s third largest marina, formed on reclaimed land and opened by Sir Alec Rose, whose Lively Lady was the first vessel to enter the new complex. He was the Portsmouth greengrocer who was knighted by Queen Elizabeth II in 1968, after he sailed into Portsmouth Harbour having completed a 354-day, 28,500-mile, solo trip around the globe. Sir Alec, who was also given the freedom of Portsmouth, died in 1991, at 82.
+ 13 | shortDescriptionHtml   | <h2 style="text-align: center">The Wonderful World of Wetherspoons in Portsmouth : The Sir Alec Rose, Port Solent</h2><p style="text-align: center"><b>Question</b>: What was the name of the vessel Sir Alec Rose circumnavigated the globe in?</p>
+ 14 | longDescriptionHtml    | The design of Wetherspoons carpets can be surprisingly varied from one pub to another, with each location often sporting its own unique pattern, contributing to the feeling of a local, personalized establishment. Despite their vivid patterns, these carpets have become almost synonymous with the brand, with many regulars associating the distinctive designs with the cozy, no-frills environment that Wetherspoons pubs are known for. There&#x2019;s even a sense of humor in some of the designs, with patterns that might seem random or unusual, adding to the charm of the space.<br />
+<br />
+Some patrons even take to social media to share their love&#x2014;or bemusement&#x2014;of the carpets, leading to a sort of cult following for these often-overlooked details in the pub experience.<br />
+<br />
+Pub history<br />
+<br />
+Port Solent is the country&#x2019;s third largest marina, formed on reclaimed land and opened by Sir Alec Rose, whose Lively Lady was the first vessel to enter the new complex. He was the Portsmouth greengrocer who was knighted by Queen Elizabeth II in 1968, after he sailed into Portsmouth Harbour having completed a 354-day, 28,500-mile, solo trip around the globe. Sir Alec, who was also given the freedom of Portsmouth, died in 1991, at 82.
+ 15 | hasCorrected           | False
+ 16 | dnf                    | False
+ 17 | gcNote                 | 
+ 18 | LBsplitScreen          | <div style='font-family:verdana,arial,sans-serif'><div style='box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0,0,0,0.3) 0px 30px 60px -30px, rgba(10,37,64,0.35) 0px -2px 6px 0px inset;padding:1em;margin:2em 0;'><img src='file:///C:/PROGRA~2/gsak/images/cacheQ.gif' align='absmiddle' alt='Lab Stage' title='Lab Stage' style='float:right;'/><p><span style='background:#060;color:#fff;border-radius:5px;padding:3px 5px;'>Stage 5 of 5</span>&nbsp;&nbsp;<span style='background:#060;color:#fff;border-radius:5px;padding:3px 5px;'>Sequence: Random - DrivingTour themed</span>&nbsp;&nbsp;<span style='background:#060;color:#fff;border-radius:5px;padding:3px 5px;'>Geofence: 100 metres</span></p><div>The design of Wetherspoons carpets can be surprisingly varied from one pub to another, with each location often sporting its own unique pattern, contributing to the feeling of a local, personalized establishment. Despite their vivid patterns, these carpets have become almost synonymous with the brand, with many regulars associating the distinctive designs with the cozy, no-frills environment that Wetherspoons pubs are known for. There&#x2019;s even a sense of humor in some of the designs, with patterns that might seem random or unusual, adding to the charm of the space.<br />
+<br />
+Some patrons even take to social media to share their love&#x2014;or bemusement&#x2014;of the carpets, leading to a sort of cult following for these often-overlooked details in the pub experience.<br />
+<br />
+Pub history<br />
+<br />
+Port Solent is the country&#x2019;s third largest marina, formed on reclaimed land and opened by Sir Alec Rose, whose Lively Lady was the first vessel to enter the new complex. He was the Portsmouth greengrocer who was knighted by Queen Elizabeth II in 1968, after he sailed into Portsmouth Harbour having completed a 354-day, 28,500-mile, solo trip around the globe. Sir Alec, who was also given the freedom of Portsmouth, died in 1991, at 82.</div></div><p style='text-align: center;'><img src='https://gsmediadata.blob.core.windows.net/mediacontainer/638c49f9-9af3-4b4c-b2c1-d2312053b287' style='max-width:80%; max-height:80%; border:6px solid white; border-radius:20px; box-shadow:5px 5px 7px rgba(0,0,0,0.5);'/></p><div style='font-family:verdana,arial,sans-serif'><div style='box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;padding:1em;margin:2em 0;'><img src='https://labs.geocaching.com/Content/images/al-logo-balloon.svg' align='absmiddle' alt='Adventure' title='Adventure' style='float:right;width:6em;'/><p><span style='background:#060;color:#fff;border-radius:5px;padding:3px 5px;'>Ave: 4.6 rating from 15 Users for 5 Lab Stages. Duration about 92 mins</span>&nbsp;&nbsp;<span style='background:#060;color:#fff;border-radius:5px;padding:3px 5px;'>Sequence: Random - DrivingTour themed</span></p><p>This AL celebrates the variety of Wetherspoons carpets.<br />
+<br />
+You DO NOT need to visit the headline location of this AL unless you want to enjoy the hospitality at the Isambard Kingdom Brunel in Guildhall Square.<br />
+<br />
+Wetherspoons carpets are a distinctive feature found in the chain of pubs across the UK, often sparking curiosity and debate among patrons. These carpets typically feature bold, intricate patterns and bright colours, sometimes blending floral motifs or, geometric designs. They are known for being rather eye-catching and quirky, often combining a somewhat vintage aesthetic with a touch of the eccentric.</p></div><p style='text-align: center;'><img src='https://gsmediadata.blob.core.windows.net/mediacontainer/c6165a4c-049a-4a20-9650-6e95113bdf76' style='max-width:80%; max-height:80%; border:6px solid white; border-radius:20px; box-shadow:5px 5px 7px rgba(0,0,0,0.5); '/></p></div></div>

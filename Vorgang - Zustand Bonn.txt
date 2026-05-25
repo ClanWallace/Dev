@@ -1,0 +1,266 @@
+=== WAYPOINT 1 (PARENT ADVENTURE) ===
+  1 | coreCode               | 13ng
+  2 | cacheId                | 252940
+  3 | guid                   | 1b77e6e5-4bc5-40bd-99ed-e9a1203285ab
+  4 | ALname                 | ? Vorgang - Zustand || Bonn || ? ?
+  5 | ALnameHtml             | &#x2600;&#xFE0F; Vorgang - Zustand || Bonn || &#x2600;&#xFE0F; &#x1F60E;
+  6 | visibility             | Public
+  7 | isArchived             | false
+  8 | ownerId                | 17402256
+  9 | ownerName              | ben_bonn
+ 10 | ownerNameHtml          | ben_bonn
+ 11 | favPoints              | 4.3
+ 12 | users                  | 174
+ 13 | created                | 2023-04-21
+ 14 | placedDate             | 2023-04-25
+ 15 | duration               | 7
+ 16 | ALlongDescriptionHtml  | &#x2600;&#xFE0F; Vorgang - Zustand || Bonn || &#x2600;&#xFE0F; &#x1F60E;<br />
+<br />
+Lutz Fritsch: Vorgang - Zustand, 1995<br />
+<br />
+"Vier Stelen erzeugen eine visuell erfahrbare Platzsituation. Die Korrespondenz von drei in Nachbarschaft befindlichen Geb&#xE4;uden, die urspr&#xFC;nglich zu einem Grundst&#xFC;ck geh&#xF6;rten, wird sichtbar. Die S&#xE4;ulen verbinden die H&#xE4;user &#xFC;ber die Stra&#xDF;e hinweg. Die gelben Stelen sind zugleich Energie und Ruhe. Die durchg&#xE4;ngig gelbe Farbe zeigt deutliche Beziehungen auf, die der Betrachter nachvollziehen kann. ... Die leuchtenden gelben Stelen besetzen den Ort nicht, sondern zeigen durch ihre Position und Zuordnung den Raum auf. Sie betonen den Ort."<br />
+<br />
+Quelle: Infotafel zum Kunstwerk von Lutz Fritsch<br />
+Weitere Informationen: www.lutz-fritsch.de<br />
+<br />
+Zus&#xE4;tzlich gibt es den physisch aufzusuchenden und zu findenden Bonus-Cache <a href="gsak://%FF/open/https://coord.info/GCA7RH7">GCA7RH7</a>:<br />
+ "&#x2600;&#xFE0F; Vorgang - Zustand || Bonn || - BONUS &#x2600;&#xFE0F; &#x1F60E;"<br />
+<br />
+https://coord.info/<a href="gsak://%FF/open/https://coord.info/GCA7RH7">GCA7RH7</a><br />
+<br />
+Viel Spa&#xDF; !  &#x2600;&#xFE0F; &#x1F60E;
+ 17 | lat                    | 50.724116666667
+ 18 | lon                    | 7.0774666666667
+ 19 | ALimage                | https://gsmediadata.blob.core.windows.net/mediacontainer/339c218c-f877-4857-be3a-32a6c56f0675
+ 20 | cacheType              | A
+ 21 | theme                  | Art
+ 22 | adventureType          | Sequential
+ 23 | hints                  | Sequence: Linear - Art themed
+ 24 | hasCorrected           | False
+ 25 | dnf                    | True
+ 26 | stages                 | 5
+ 27 | gcNote                 | Ave: 4.3 rating from 174 Users for 5 Lab Stages. Duration about 7 mins
+ 28 | ALshortDescriptionHtml | <h2 style="text-align: center">&#x2600;&#xFE0F; Vorgang - Zustand || Bonn || &#x2600;&#xFE0F; &#x1F60E;<br />by<br />ben_bonn</h2>
+ 29 | ALsplitScreen          | <div style='font-family:verdana,arial,sans-serif'><div style='box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;padding:1em;margin:2em 0;'><img src='https://labs.geocaching.com/Content/images/al-logo-balloon.svg' align='absmiddle' alt='Adventure' title='Adventure' style='float:right;width:6em;'/><p><span style='background:#060;color:#fff;border-radius:5px;padding:3px 5px;'>Ave: 4.3 rating from 174 Users for 5 Lab Stages. Duration about 7 mins</span>&nbsp;&nbsp;<span style='background:#060;color:#fff;border-radius:5px;padding:3px 5px;'>Sequence: Linear - Art themed</span></p><p>&#x2600;&#xFE0F; Vorgang - Zustand || Bonn || &#x2600;&#xFE0F; &#x1F60E;<br />
+<br />
+Lutz Fritsch: Vorgang - Zustand, 1995<br />
+<br />
+"Vier Stelen erzeugen eine visuell erfahrbare Platzsituation. Die Korrespondenz von drei in Nachbarschaft befindlichen Geb&#xE4;uden, die urspr&#xFC;nglich zu einem Grundst&#xFC;ck geh&#xF6;rten, wird sichtbar. Die S&#xE4;ulen verbinden die H&#xE4;user &#xFC;ber die Stra&#xDF;e hinweg. Die gelben Stelen sind zugleich Energie und Ruhe. Die durchg&#xE4;ngig gelbe Farbe zeigt deutliche Beziehungen auf, die der Betrachter nachvollziehen kann. ... Die leuchtenden gelben Stelen besetzen den Ort nicht, sondern zeigen durch ihre Position und Zuordnung den Raum auf. Sie betonen den Ort."<br />
+<br />
+Quelle: Infotafel zum Kunstwerk von Lutz Fritsch<br />
+Weitere Informationen: www.lutz-fritsch.de<br />
+<br />
+Zus&#xE4;tzlich gibt es den physisch aufzusuchenden und zu findenden Bonus-Cache <a href="gsak://%FF/open/https://coord.info/GCA7RH7">GCA7RH7</a>:<br />
+ "&#x2600;&#xFE0F; Vorgang - Zustand || Bonn || - BONUS &#x2600;&#xFE0F; &#x1F60E;"<br />
+<br />
+https://coord.info/<a href="gsak://%FF/open/https://coord.info/GCA7RH7">GCA7RH7</a><br />
+<br />
+Viel Spa&#xDF; !  &#x2600;&#xFE0F; &#x1F60E;</p></div><p style='text-align: center;'><img src='https://gsmediadata.blob.core.windows.net/mediacontainer/339c218c-f877-4857-be3a-32a6c56f0675' style='max-width:80%; max-height:80%; border:6px solid white; border-radius:20px; box-shadow:5px 5px 7px rgba(0,0,0,0.5); '/></p></div>
+
+=== WAYPOINT 2 (STAGE 1) ===
+  1 | lab                    | 1
+  2 | suffix                 | 01
+  3 | guid                   | 38fd9ce3-d19a-40d9-ae6d-97001e6484ca
+  4 | LBname                 | ? Vorgang - Zustand || Bonn || ? ? : S1 ? Vorgang - Zustand || Infotafel || ? ?
+  5 | LBnameHtml             | &#x2600;&#xFE0F; Vorgang - Zustand || Bonn || &#x2600;&#xFE0F; &#x1F60E; : &#x2600;&#xFE0F; Vorgang - Zustand || Infotafel || &#x2600;&#xFE0F; &#x1F60E;
+  6 | lat                    | 50.723966666667
+  7 | lon                    | 7.0775
+  8 | LBimage                | https://gsmediadata.blob.core.windows.net/mediacontainer/d83569b1-496b-4e3d-a9f9-dae374f50ad7
+  9 | geofence               | 20
+ 10 | challengeType          | SingleChoice
+ 11 | question               | Aus wieviel Teilen bestand urspr?nglich die Aussen- und Innenarbeit von Lutz Fritsch (Zahlwort) ?
+ 12 | LBdescriptionHtml      | "Die Erlebnism&#xF6;glichkeiten vor Ort, vom Ma&#xDF; zum Unerme&#xDF;lichen, vom Begrenzten zum Grenzenlosen macht dem Menschen den Raum als wesentlichen Teil seiner Existenz bewu&#xDF;t."<br />
+<br />
+Lutz Fritsch, geb. 1995, lebt in K&#xF6;ln<br />
+<br />
+<br />
+Quelle: Infotafel zum Kunstwerk von Lutz Fritsch
+ 13 | shortDescriptionHtml   | <h2 style="text-align: center">&#x2600;&#xFE0F; Vorgang - Zustand || Bonn || &#x2600;&#xFE0F; &#x1F60E; : &#x2600;&#xFE0F; Vorgang - Zustand || Infotafel || &#x2600;&#xFE0F; &#x1F60E;</h2><p style="text-align: center"><b>Question</b>: Aus wieviel Teilen bestand urspr&#xFC;nglich die Au&#xDF;en- und Innenarbeit von Lutz Fritsch (Zahlwort) ?</p>
+ 14 | longDescriptionHtml    | "Die Erlebnism&#xF6;glichkeiten vor Ort, vom Ma&#xDF; zum Unerme&#xDF;lichen, vom Begrenzten zum Grenzenlosen macht dem Menschen den Raum als wesentlichen Teil seiner Existenz bewu&#xDF;t."<br />
+<br />
+Lutz Fritsch, geb. 1995, lebt in K&#xF6;ln<br />
+<br />
+<br />
+Quelle: Infotafel zum Kunstwerk von Lutz Fritsch
+ 15 | hasCorrected           | False
+ 16 | dnf                    | False
+ 17 | gcNote                 | 
+ 18 | LBsplitScreen          | <div style='font-family:verdana,arial,sans-serif'><div style='box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0,0,0,0.3) 0px 30px 60px -30px, rgba(10,37,64,0.35) 0px -2px 6px 0px inset;padding:1em;margin:2em 0;'><img src='file:///C:/PROGRA~2/gsak/images/cacheQ.gif' align='absmiddle' alt='Lab Stage' title='Lab Stage' style='float:right;'/><p><span style='background:#060;color:#fff;border-radius:5px;padding:3px 5px;'>Stage 1 of 5</span>&nbsp;&nbsp;<span style='background:#060;color:#fff;border-radius:5px;padding:3px 5px;'>Sequence: Linear - Art themed</span>&nbsp;&nbsp;<span style='background:#060;color:#fff;border-radius:5px;padding:3px 5px;'>Geofence: 20 metres</span></p><div>"Die Erlebnism&#xF6;glichkeiten vor Ort, vom Ma&#xDF; zum Unerme&#xDF;lichen, vom Begrenzten zum Grenzenlosen macht dem Menschen den Raum als wesentlichen Teil seiner Existenz bewu&#xDF;t."<br />
+<br />
+Lutz Fritsch, geb. 1995, lebt in K&#xF6;ln<br />
+<br />
+<br />
+Quelle: Infotafel zum Kunstwerk von Lutz Fritsch</div></div><p style='text-align: center;'><img src='https://gsmediadata.blob.core.windows.net/mediacontainer/d83569b1-496b-4e3d-a9f9-dae374f50ad7' style='max-width:80%; max-height:80%; border:6px solid white; border-radius:20px; box-shadow:5px 5px 7px rgba(0,0,0,0.5);'/></p><div style='font-family:verdana,arial,sans-serif'><div style='box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;padding:1em;margin:2em 0;'><img src='https://labs.geocaching.com/Content/images/al-logo-balloon.svg' align='absmiddle' alt='Adventure' title='Adventure' style='float:right;width:6em;'/><p><span style='background:#060;color:#fff;border-radius:5px;padding:3px 5px;'>Ave: 4.3 rating from 174 Users for 5 Lab Stages. Duration about 7 mins</span>&nbsp;&nbsp;<span style='background:#060;color:#fff;border-radius:5px;padding:3px 5px;'>Sequence: Linear - Art themed</span></p><p>&#x2600;&#xFE0F; Vorgang - Zustand || Bonn || &#x2600;&#xFE0F; &#x1F60E;<br />
+<br />
+Lutz Fritsch: Vorgang - Zustand, 1995<br />
+<br />
+"Vier Stelen erzeugen eine visuell erfahrbare Platzsituation. Die Korrespondenz von drei in Nachbarschaft befindlichen Geb&#xE4;uden, die urspr&#xFC;nglich zu einem Grundst&#xFC;ck geh&#xF6;rten, wird sichtbar. Die S&#xE4;ulen verbinden die H&#xE4;user &#xFC;ber die Stra&#xDF;e hinweg. Die gelben Stelen sind zugleich Energie und Ruhe. Die durchg&#xE4;ngig gelbe Farbe zeigt deutliche Beziehungen auf, die der Betrachter nachvollziehen kann. ... Die leuchtenden gelben Stelen besetzen den Ort nicht, sondern zeigen durch ihre Position und Zuordnung den Raum auf. Sie betonen den Ort."<br />
+<br />
+Quelle: Infotafel zum Kunstwerk von Lutz Fritsch<br />
+Weitere Informationen: www.lutz-fritsch.de<br />
+<br />
+Zus&#xE4;tzlich gibt es den physisch aufzusuchenden und zu findenden Bonus-Cache <a href="gsak://%FF/open/https://coord.info/GCA7RH7">GCA7RH7</a>:<br />
+ "&#x2600;&#xFE0F; Vorgang - Zustand || Bonn || - BONUS &#x2600;&#xFE0F; &#x1F60E;"<br />
+<br />
+https://coord.info/<a href="gsak://%FF/open/https://coord.info/GCA7RH7">GCA7RH7</a><br />
+<br />
+Viel Spa&#xDF; !  &#x2600;&#xFE0F; &#x1F60E;</p></div><p style='text-align: center;'><img src='https://gsmediadata.blob.core.windows.net/mediacontainer/339c218c-f877-4857-be3a-32a6c56f0675' style='max-width:80%; max-height:80%; border:6px solid white; border-radius:20px; box-shadow:5px 5px 7px rgba(0,0,0,0.5); '/></p></div></div>
+=== WAYPOINT 3 (STAGE 2) ===
+  1 | lab                    | 2
+  2 | suffix                 | 02
+  3 | guid                   | c0534644-ca58-49d6-8536-d1b83e5b4ab0
+  4 | LBname                 | ? Vorgang - Zustand || Bonn || ? ? : S2 ? Vorgang - Zustand || Schumannhaus || ? ?
+  5 | LBnameHtml             | &#x2600;&#xFE0F; Vorgang - Zustand || Bonn || &#x2600;&#xFE0F; &#x1F60E; : &#x2600;&#xFE0F; Vorgang - Zustand || Schumannhaus || &#x2600;&#xFE0F; &#x1F60E;
+  6 | lat                    | 50.72445
+  7 | lon                    | 7.0772166666667
+  8 | LBimage                | https://gsmediadata.blob.core.windows.net/mediacontainer/a96e10d9-ec23-4cbb-a497-48b919be3601
+  9 | geofence               | 20
+ 10 | challengeType          | SingleChoice
+ 11 | question               | Wie ist der Buchstabencode auf dem Bodenscheinwerfer (xx-xx) ?
+ 12 | LBdescriptionHtml      | Das Schumannhaus ist das Sterbehaus des deutschen Komponisten Robert Schumann (gestorben am 29. Juli 1856) in Bonn-Endenich. Im 19. Jahrhundert beherbergte es die Richarz&#x2019;sche Privat-Irrenanstalt. Heute ist das Schumannhaus eine Gedenkst&#xE4;tte und wird als Museum und Musikbibliothek der Stadt Bonn genutzt. <br />
+<br />
+Quelle: www.wikipedia.de
+ 13 | shortDescriptionHtml   | <h2 style="text-align: center">&#x2600;&#xFE0F; Vorgang - Zustand || Bonn || &#x2600;&#xFE0F; &#x1F60E; : &#x2600;&#xFE0F; Vorgang - Zustand || Schumannhaus || &#x2600;&#xFE0F; &#x1F60E;</h2><p style="text-align: center"><b>Question</b>: Wie ist der Buchstabencode auf dem Bodenscheinwerfer ("xx-xx") ?</p>
+ 14 | longDescriptionHtml    | Das Schumannhaus ist das Sterbehaus des deutschen Komponisten Robert Schumann (gestorben am 29. Juli 1856) in Bonn-Endenich. Im 19. Jahrhundert beherbergte es die Richarz&#x2019;sche Privat-Irrenanstalt. Heute ist das Schumannhaus eine Gedenkst&#xE4;tte und wird als Museum und Musikbibliothek der Stadt Bonn genutzt. <br />
+<br />
+Quelle: www.wikipedia.de
+ 15 | hasCorrected           | False
+ 16 | dnf                    | False
+ 17 | gcNote                 | 
+ 18 | LBsplitScreen          | <div style='font-family:verdana,arial,sans-serif'><div style='box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0,0,0,0.3) 0px 30px 60px -30px, rgba(10,37,64,0.35) 0px -2px 6px 0px inset;padding:1em;margin:2em 0;'><img src='file:///C:/PROGRA~2/gsak/images/cacheQ.gif' align='absmiddle' alt='Lab Stage' title='Lab Stage' style='float:right;'/><p><span style='background:#060;color:#fff;border-radius:5px;padding:3px 5px;'>Stage 2 of 5</span>&nbsp;&nbsp;<span style='background:#060;color:#fff;border-radius:5px;padding:3px 5px;'>Sequence: Linear - Art themed</span>&nbsp;&nbsp;<span style='background:#060;color:#fff;border-radius:5px;padding:3px 5px;'>Geofence: 20 metres</span></p><div>Das Schumannhaus ist das Sterbehaus des deutschen Komponisten Robert Schumann (gestorben am 29. Juli 1856) in Bonn-Endenich. Im 19. Jahrhundert beherbergte es die Richarz&#x2019;sche Privat-Irrenanstalt. Heute ist das Schumannhaus eine Gedenkst&#xE4;tte und wird als Museum und Musikbibliothek der Stadt Bonn genutzt. <br />
+<br />
+Quelle: www.wikipedia.de</div></div><p style='text-align: center;'><img src='https://gsmediadata.blob.core.windows.net/mediacontainer/a96e10d9-ec23-4cbb-a497-48b919be3601' style='max-width:80%; max-height:80%; border:6px solid white; border-radius:20px; box-shadow:5px 5px 7px rgba(0,0,0,0.5);'/></p><div style='font-family:verdana,arial,sans-serif'><div style='box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;padding:1em;margin:2em 0;'><img src='https://labs.geocaching.com/Content/images/al-logo-balloon.svg' align='absmiddle' alt='Adventure' title='Adventure' style='float:right;width:6em;'/><p><span style='background:#060;color:#fff;border-radius:5px;padding:3px 5px;'>Ave: 4.3 rating from 174 Users for 5 Lab Stages. Duration about 7 mins</span>&nbsp;&nbsp;<span style='background:#060;color:#fff;border-radius:5px;padding:3px 5px;'>Sequence: Linear - Art themed</span></p><p>&#x2600;&#xFE0F; Vorgang - Zustand || Bonn || &#x2600;&#xFE0F; &#x1F60E;<br />
+<br />
+Lutz Fritsch: Vorgang - Zustand, 1995<br />
+<br />
+"Vier Stelen erzeugen eine visuell erfahrbare Platzsituation. Die Korrespondenz von drei in Nachbarschaft befindlichen Geb&#xE4;uden, die urspr&#xFC;nglich zu einem Grundst&#xFC;ck geh&#xF6;rten, wird sichtbar. Die S&#xE4;ulen verbinden die H&#xE4;user &#xFC;ber die Stra&#xDF;e hinweg. Die gelben Stelen sind zugleich Energie und Ruhe. Die durchg&#xE4;ngig gelbe Farbe zeigt deutliche Beziehungen auf, die der Betrachter nachvollziehen kann. ... Die leuchtenden gelben Stelen besetzen den Ort nicht, sondern zeigen durch ihre Position und Zuordnung den Raum auf. Sie betonen den Ort."<br />
+<br />
+Quelle: Infotafel zum Kunstwerk von Lutz Fritsch<br />
+Weitere Informationen: www.lutz-fritsch.de<br />
+<br />
+Zus&#xE4;tzlich gibt es den physisch aufzusuchenden und zu findenden Bonus-Cache <a href="gsak://%FF/open/https://coord.info/GCA7RH7">GCA7RH7</a>:<br />
+ "&#x2600;&#xFE0F; Vorgang - Zustand || Bonn || - BONUS &#x2600;&#xFE0F; &#x1F60E;"<br />
+<br />
+https://coord.info/<a href="gsak://%FF/open/https://coord.info/GCA7RH7">GCA7RH7</a><br />
+<br />
+Viel Spa&#xDF; !  &#x2600;&#xFE0F; &#x1F60E;</p></div><p style='text-align: center;'><img src='https://gsmediadata.blob.core.windows.net/mediacontainer/339c218c-f877-4857-be3a-32a6c56f0675' style='max-width:80%; max-height:80%; border:6px solid white; border-radius:20px; box-shadow:5px 5px 7px rgba(0,0,0,0.5); '/></p></div></div>
+=== WAYPOINT 4 (STAGE 3) ===
+  1 | lab                    | 3
+  2 | suffix                 | 03
+  3 | guid                   | acd4a8da-077c-455a-800c-935f19a1d757
+  4 | LBname                 | ? Vorgang - Zustand || Bonn || ? ? : S3 ? Vorgang - Zustand || Schumanns H?he || ? ?
+  5 | LBnameHtml             | &#x2600;&#xFE0F; Vorgang - Zustand || Bonn || &#x2600;&#xFE0F; &#x1F60E; : &#x2600;&#xFE0F; Vorgang - Zustand || Schumanns H&#xF6;he || &#x2600;&#xFE0F; &#x1F60E;
+  6 | lat                    | 50.724116666667
+  7 | lon                    | 7.0776166666667
+  8 | LBimage                | https://gsmediadata.blob.core.windows.net/mediacontainer/2c24723f-e64c-47b7-a378-e8101a86dfce
+  9 | geofence               | 20
+ 10 | challengeType          | SingleChoice
+ 11 | question               | Wie ist die Nummer der n?chstgelegenen Strassenlampe am Zebrastreifen (Zahl) ?
+ 12 | LBdescriptionHtml      | In zentraler Lage im Herzen von Bonn-Endenich befindet sich das Grundst&#xFC;ck der Schumanns H&#xF6;he. Entwickelt wurde ein ganzheitliches Quartier mit mehr als 200 Wohneinheiten verschiedenster Gr&#xF6;&#xDF;en und Konzeptionen f&#xFC;r eine Vielzahl unterschiedlicher Nutzergruppen sowie Jung und Alt. Der Neubau startete im Jahr 2019 in mehreren Abschnitten bis hin zur gesamten Fertigstellung im Jahr 2022.<br />
+<br />
+Insidertipp:<br />
+Seit 2018 finden hier regelm&#xE4;&#xDF;ig Geocache-Events - normalerweise einmal in der Woche zur Mittagszeit zwischen 12:00 Uhr und 12:30 Uhr - statt. Alle Geocache-Begeisterten sind immer herzlich willkommen.
+ 13 | shortDescriptionHtml   | <h2 style="text-align: center">&#x2600;&#xFE0F; Vorgang - Zustand || Bonn || &#x2600;&#xFE0F; &#x1F60E; : &#x2600;&#xFE0F; Vorgang - Zustand || Schumanns H&#xF6;he || &#x2600;&#xFE0F; &#x1F60E;</h2><p style="text-align: center"><b>Question</b>: Wie ist die Nummer der n&#xE4;chstgelegenen Stra&#xDF;enlampe am Zebrastreifen (Zahl) ?</p>
+ 14 | longDescriptionHtml    | In zentraler Lage im Herzen von Bonn-Endenich befindet sich das Grundst&#xFC;ck der Schumanns H&#xF6;he. Entwickelt wurde ein ganzheitliches Quartier mit mehr als 200 Wohneinheiten verschiedenster Gr&#xF6;&#xDF;en und Konzeptionen f&#xFC;r eine Vielzahl unterschiedlicher Nutzergruppen sowie Jung und Alt. Der Neubau startete im Jahr 2019 in mehreren Abschnitten bis hin zur gesamten Fertigstellung im Jahr 2022.<br />
+<br />
+Insidertipp:<br />
+Seit 2018 finden hier regelm&#xE4;&#xDF;ig Geocache-Events - normalerweise einmal in der Woche zur Mittagszeit zwischen 12:00 Uhr und 12:30 Uhr - statt. Alle Geocache-Begeisterten sind immer herzlich willkommen.
+ 15 | hasCorrected           | False
+ 16 | dnf                    | False
+ 17 | gcNote                 | 
+ 18 | LBsplitScreen          | <div style='font-family:verdana,arial,sans-serif'><div style='box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0,0,0,0.3) 0px 30px 60px -30px, rgba(10,37,64,0.35) 0px -2px 6px 0px inset;padding:1em;margin:2em 0;'><img src='file:///C:/PROGRA~2/gsak/images/cacheQ.gif' align='absmiddle' alt='Lab Stage' title='Lab Stage' style='float:right;'/><p><span style='background:#060;color:#fff;border-radius:5px;padding:3px 5px;'>Stage 3 of 5</span>&nbsp;&nbsp;<span style='background:#060;color:#fff;border-radius:5px;padding:3px 5px;'>Sequence: Linear - Art themed</span>&nbsp;&nbsp;<span style='background:#060;color:#fff;border-radius:5px;padding:3px 5px;'>Geofence: 20 metres</span></p><div>In zentraler Lage im Herzen von Bonn-Endenich befindet sich das Grundst&#xFC;ck der Schumanns H&#xF6;he. Entwickelt wurde ein ganzheitliches Quartier mit mehr als 200 Wohneinheiten verschiedenster Gr&#xF6;&#xDF;en und Konzeptionen f&#xFC;r eine Vielzahl unterschiedlicher Nutzergruppen sowie Jung und Alt. Der Neubau startete im Jahr 2019 in mehreren Abschnitten bis hin zur gesamten Fertigstellung im Jahr 2022.<br />
+<br />
+Insidertipp:<br />
+Seit 2018 finden hier regelm&#xE4;&#xDF;ig Geocache-Events - normalerweise einmal in der Woche zur Mittagszeit zwischen 12:00 Uhr und 12:30 Uhr - statt. Alle Geocache-Begeisterten sind immer herzlich willkommen.</div></div><p style='text-align: center;'><img src='https://gsmediadata.blob.core.windows.net/mediacontainer/2c24723f-e64c-47b7-a378-e8101a86dfce' style='max-width:80%; max-height:80%; border:6px solid white; border-radius:20px; box-shadow:5px 5px 7px rgba(0,0,0,0.5);'/></p><div style='font-family:verdana,arial,sans-serif'><div style='box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;padding:1em;margin:2em 0;'><img src='https://labs.geocaching.com/Content/images/al-logo-balloon.svg' align='absmiddle' alt='Adventure' title='Adventure' style='float:right;width:6em;'/><p><span style='background:#060;color:#fff;border-radius:5px;padding:3px 5px;'>Ave: 4.3 rating from 174 Users for 5 Lab Stages. Duration about 7 mins</span>&nbsp;&nbsp;<span style='background:#060;color:#fff;border-radius:5px;padding:3px 5px;'>Sequence: Linear - Art themed</span></p><p>&#x2600;&#xFE0F; Vorgang - Zustand || Bonn || &#x2600;&#xFE0F; &#x1F60E;<br />
+<br />
+Lutz Fritsch: Vorgang - Zustand, 1995<br />
+<br />
+"Vier Stelen erzeugen eine visuell erfahrbare Platzsituation. Die Korrespondenz von drei in Nachbarschaft befindlichen Geb&#xE4;uden, die urspr&#xFC;nglich zu einem Grundst&#xFC;ck geh&#xF6;rten, wird sichtbar. Die S&#xE4;ulen verbinden die H&#xE4;user &#xFC;ber die Stra&#xDF;e hinweg. Die gelben Stelen sind zugleich Energie und Ruhe. Die durchg&#xE4;ngig gelbe Farbe zeigt deutliche Beziehungen auf, die der Betrachter nachvollziehen kann. ... Die leuchtenden gelben Stelen besetzen den Ort nicht, sondern zeigen durch ihre Position und Zuordnung den Raum auf. Sie betonen den Ort."<br />
+<br />
+Quelle: Infotafel zum Kunstwerk von Lutz Fritsch<br />
+Weitere Informationen: www.lutz-fritsch.de<br />
+<br />
+Zus&#xE4;tzlich gibt es den physisch aufzusuchenden und zu findenden Bonus-Cache <a href="gsak://%FF/open/https://coord.info/GCA7RH7">GCA7RH7</a>:<br />
+ "&#x2600;&#xFE0F; Vorgang - Zustand || Bonn || - BONUS &#x2600;&#xFE0F; &#x1F60E;"<br />
+<br />
+https://coord.info/<a href="gsak://%FF/open/https://coord.info/GCA7RH7">GCA7RH7</a><br />
+<br />
+Viel Spa&#xDF; !  &#x2600;&#xFE0F; &#x1F60E;</p></div><p style='text-align: center;'><img src='https://gsmediadata.blob.core.windows.net/mediacontainer/339c218c-f877-4857-be3a-32a6c56f0675' style='max-width:80%; max-height:80%; border:6px solid white; border-radius:20px; box-shadow:5px 5px 7px rgba(0,0,0,0.5); '/></p></div></div>
+=== WAYPOINT 5 (STAGE 4) ===
+  1 | lab                    | 4
+  2 | suffix                 | 04
+  3 | guid                   | 90f81235-c4a2-47aa-bac1-fb4c478a7f55
+  4 | LBname                 | ? Vorgang - Zustand || Bonn || ? ? : S4 ? Vorgang - Zustand || Ordenshaus || ? ?
+  5 | LBnameHtml             | &#x2600;&#xFE0F; Vorgang - Zustand || Bonn || &#x2600;&#xFE0F; &#x1F60E; : &#x2600;&#xFE0F; Vorgang - Zustand || Ordenshaus || &#x2600;&#xFE0F; &#x1F60E;
+  6 | lat                    | 50.724116666667
+  7 | lon                    | 7.0779
+  8 | LBimage                | https://gsmediadata.blob.core.windows.net/mediacontainer/62346780-498f-4090-a8dd-b9bdd7069f58
+  9 | geofence               | 20
+ 10 | challengeType          | MultiChoice
+ 11 | question               | Wie hiess das (abgerissene) ,,Ordenshaus der Alexianer-Bruderschaft ?
+ 12 | LBdescriptionHtml      | Bevor das Projekt "Schumanns H&#xF6;he" hier umgesetzt wurde, stand hier fr&#xFC;her das traditionsreiche "Ordenshaus" der Alexianer-Bruderschaft. Dies Senioren-Pflegeheim wurde 2018 im Zuge der Neubauarbeiten abgerissen und die neuen Geb&#xE4;ude entstanden (fast) an derselben Stelle.<br />
+<br />
+Vor dem Eingang war hier der urspr&#xFC;ngliche Standort der gelben Stele "Ordenshaus". Diese gelbe Stele wurde - mit Zustimmung des K&#xFC;nstlers Lutz Fritsch - nach Fertigstellung der Neubauten von Schumanns H&#xF6;he um etwa 20 Meter an ihren neuen Standort versetzt (siehe Station 2).
+ 13 | shortDescriptionHtml   | <h2 style="text-align: center">&#x2600;&#xFE0F; Vorgang - Zustand || Bonn || &#x2600;&#xFE0F; &#x1F60E; : &#x2600;&#xFE0F; Vorgang - Zustand || Ordenshaus || &#x2600;&#xFE0F; &#x1F60E;</h2><p style="text-align: center"><b>Question</b>: Wie hie&#xDF; das (abgerissene) &#x201E;Ordenshaus&#x201C; der Alexianer-Bruderschaft ?</p>
+ 14 | longDescriptionHtml    | Bevor das Projekt "Schumanns H&#xF6;he" hier umgesetzt wurde, stand hier fr&#xFC;her das traditionsreiche "Ordenshaus" der Alexianer-Bruderschaft. Dies Senioren-Pflegeheim wurde 2018 im Zuge der Neubauarbeiten abgerissen und die neuen Geb&#xE4;ude entstanden (fast) an derselben Stelle.<br />
+<br />
+Vor dem Eingang war hier der urspr&#xFC;ngliche Standort der gelben Stele "Ordenshaus". Diese gelbe Stele wurde - mit Zustimmung des K&#xFC;nstlers Lutz Fritsch - nach Fertigstellung der Neubauten von Schumanns H&#xF6;he um etwa 20 Meter an ihren neuen Standort versetzt (siehe Station 2).
+ 15 | hasCorrected           | False
+ 16 | dnf                    | False
+ 17 | gcNote                 | 
+ 18 | LBsplitScreen          | <div style='font-family:verdana,arial,sans-serif'><div style='box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0,0,0,0.3) 0px 30px 60px -30px, rgba(10,37,64,0.35) 0px -2px 6px 0px inset;padding:1em;margin:2em 0;'><img src='file:///C:/PROGRA~2/gsak/images/cacheQ.gif' align='absmiddle' alt='Lab Stage' title='Lab Stage' style='float:right;'/><p><span style='background:#060;color:#fff;border-radius:5px;padding:3px 5px;'>Stage 4 of 5</span>&nbsp;&nbsp;<span style='background:#060;color:#fff;border-radius:5px;padding:3px 5px;'>Sequence: Linear - Art themed</span>&nbsp;&nbsp;<span style='background:#060;color:#fff;border-radius:5px;padding:3px 5px;'>Geofence: 20 metres</span></p><div>Bevor das Projekt "Schumanns H&#xF6;he" hier umgesetzt wurde, stand hier fr&#xFC;her das traditionsreiche "Ordenshaus" der Alexianer-Bruderschaft. Dies Senioren-Pflegeheim wurde 2018 im Zuge der Neubauarbeiten abgerissen und die neuen Geb&#xE4;ude entstanden (fast) an derselben Stelle.<br />
+<br />
+Vor dem Eingang war hier der urspr&#xFC;ngliche Standort der gelben Stele "Ordenshaus". Diese gelbe Stele wurde - mit Zustimmung des K&#xFC;nstlers Lutz Fritsch - nach Fertigstellung der Neubauten von Schumanns H&#xF6;he um etwa 20 Meter an ihren neuen Standort versetzt (siehe Station 2).</div></div><p style='text-align: center;'><img src='https://gsmediadata.blob.core.windows.net/mediacontainer/62346780-498f-4090-a8dd-b9bdd7069f58' style='max-width:80%; max-height:80%; border:6px solid white; border-radius:20px; box-shadow:5px 5px 7px rgba(0,0,0,0.5);'/></p><div style='font-family:verdana,arial,sans-serif'><div style='box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;padding:1em;margin:2em 0;'><img src='https://labs.geocaching.com/Content/images/al-logo-balloon.svg' align='absmiddle' alt='Adventure' title='Adventure' style='float:right;width:6em;'/><p><span style='background:#060;color:#fff;border-radius:5px;padding:3px 5px;'>Ave: 4.3 rating from 174 Users for 5 Lab Stages. Duration about 7 mins</span>&nbsp;&nbsp;<span style='background:#060;color:#fff;border-radius:5px;padding:3px 5px;'>Sequence: Linear - Art themed</span></p><p>&#x2600;&#xFE0F; Vorgang - Zustand || Bonn || &#x2600;&#xFE0F; &#x1F60E;<br />
+<br />
+Lutz Fritsch: Vorgang - Zustand, 1995<br />
+<br />
+"Vier Stelen erzeugen eine visuell erfahrbare Platzsituation. Die Korrespondenz von drei in Nachbarschaft befindlichen Geb&#xE4;uden, die urspr&#xFC;nglich zu einem Grundst&#xFC;ck geh&#xF6;rten, wird sichtbar. Die S&#xE4;ulen verbinden die H&#xE4;user &#xFC;ber die Stra&#xDF;e hinweg. Die gelben Stelen sind zugleich Energie und Ruhe. Die durchg&#xE4;ngig gelbe Farbe zeigt deutliche Beziehungen auf, die der Betrachter nachvollziehen kann. ... Die leuchtenden gelben Stelen besetzen den Ort nicht, sondern zeigen durch ihre Position und Zuordnung den Raum auf. Sie betonen den Ort."<br />
+<br />
+Quelle: Infotafel zum Kunstwerk von Lutz Fritsch<br />
+Weitere Informationen: www.lutz-fritsch.de<br />
+<br />
+Zus&#xE4;tzlich gibt es den physisch aufzusuchenden und zu findenden Bonus-Cache <a href="gsak://%FF/open/https://coord.info/GCA7RH7">GCA7RH7</a>:<br />
+ "&#x2600;&#xFE0F; Vorgang - Zustand || Bonn || - BONUS &#x2600;&#xFE0F; &#x1F60E;"<br />
+<br />
+https://coord.info/<a href="gsak://%FF/open/https://coord.info/GCA7RH7">GCA7RH7</a><br />
+<br />
+Viel Spa&#xDF; !  &#x2600;&#xFE0F; &#x1F60E;</p></div><p style='text-align: center;'><img src='https://gsmediadata.blob.core.windows.net/mediacontainer/339c218c-f877-4857-be3a-32a6c56f0675' style='max-width:80%; max-height:80%; border:6px solid white; border-radius:20px; box-shadow:5px 5px 7px rgba(0,0,0,0.5); '/></p></div></div>
+=== WAYPOINT 6 (STAGE 5) ===
+  1 | lab                    | 5
+  2 | suffix                 | 05
+  3 | guid                   | b17d4579-6594-4795-a949-90fba963a86c
+  4 | LBname                 | ? Vorgang - Zustand || Bonn || ? ? : S5 ? Vorgang - Zustand || Sebastianstr. 189 || ? ?
+  5 | LBnameHtml             | &#x2600;&#xFE0F; Vorgang - Zustand || Bonn || &#x2600;&#xFE0F; &#x1F60E; : &#x2600;&#xFE0F; Vorgang - Zustand || Sebastianstr. 189 || &#x2600;&#xFE0F; &#x1F60E;
+  6 | lat                    | 50.723933333333
+  7 | lon                    | 7.07755
+  8 | LBimage                | https://gsmediadata.blob.core.windows.net/mediacontainer/637261af-9386-463a-8c15-975f86ce6595
+  9 | geofence               | 20
+ 10 | challengeType          | SingleChoice
+ 11 | question               | Wie breit sind die gelben Stelen jeweils (aufgerundet in Zentimetern - Zahlwort) ?
+ 12 | LBdescriptionHtml      | Nach der Fertigstellung des Geb&#xE4;udes "Sebastianstra&#xDF;e 189" im Jahr 1993 wurde in einem Kunstwettbewerb der K&#xFC;nstler Lutz Fritsch ausgew&#xE4;hlt, das Skulpturenprojekt "Vorgang - Zustand" zu realisieren. <br />
+<br />
+Im Jahr 1995 wurden die vier gelben Stelen aufgestellt (und die vier orangenen Stahltafeln platziert). Seit dem erzeugen die vier gelben Stelen eine visuell erfahrbare Platzsituation. Anfang 2023 war eine aufw&#xE4;ndige Sanierung der Stelen erforderlich. Die leuchtenden gelben Stelen betonen den sch&#xF6;nen, zentralen Ort in Bonn-Endenich.
+ 13 | shortDescriptionHtml   | <h2 style="text-align: center">&#x2600;&#xFE0F; Vorgang - Zustand || Bonn || &#x2600;&#xFE0F; &#x1F60E; : &#x2600;&#xFE0F; Vorgang - Zustand || Sebastianstr. 189 || &#x2600;&#xFE0F; &#x1F60E;</h2><p style="text-align: center"><b>Question</b>: Wie breit sind die gelben Stelen jeweils (aufgerundet in Zentimetern - Zahlwort) ?</p>
+ 14 | longDescriptionHtml    | Nach der Fertigstellung des Geb&#xE4;udes "Sebastianstra&#xDF;e 189" im Jahr 1993 wurde in einem Kunstwettbewerb der K&#xFC;nstler Lutz Fritsch ausgew&#xE4;hlt, das Skulpturenprojekt "Vorgang - Zustand" zu realisieren. <br />
+<br />
+Im Jahr 1995 wurden die vier gelben Stelen aufgestellt (und die vier orangenen Stahltafeln platziert). Seit dem erzeugen die vier gelben Stelen eine visuell erfahrbare Platzsituation. Anfang 2023 war eine aufw&#xE4;ndige Sanierung der Stelen erforderlich. Die leuchtenden gelben Stelen betonen den sch&#xF6;nen, zentralen Ort in Bonn-Endenich.
+ 15 | hasCorrected           | False
+ 16 | dnf                    | False
+ 17 | gcNote                 | 
+ 18 | LBsplitScreen          | <div style='font-family:verdana,arial,sans-serif'><div style='box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0,0,0,0.3) 0px 30px 60px -30px, rgba(10,37,64,0.35) 0px -2px 6px 0px inset;padding:1em;margin:2em 0;'><img src='file:///C:/PROGRA~2/gsak/images/cacheQ.gif' align='absmiddle' alt='Lab Stage' title='Lab Stage' style='float:right;'/><p><span style='background:#060;color:#fff;border-radius:5px;padding:3px 5px;'>Stage 5 of 5</span>&nbsp;&nbsp;<span style='background:#060;color:#fff;border-radius:5px;padding:3px 5px;'>Sequence: Linear - Art themed</span>&nbsp;&nbsp;<span style='background:#060;color:#fff;border-radius:5px;padding:3px 5px;'>Geofence: 20 metres</span></p><div>Nach der Fertigstellung des Geb&#xE4;udes "Sebastianstra&#xDF;e 189" im Jahr 1993 wurde in einem Kunstwettbewerb der K&#xFC;nstler Lutz Fritsch ausgew&#xE4;hlt, das Skulpturenprojekt "Vorgang - Zustand" zu realisieren. <br />
+<br />
+Im Jahr 1995 wurden die vier gelben Stelen aufgestellt (und die vier orangenen Stahltafeln platziert). Seit dem erzeugen die vier gelben Stelen eine visuell erfahrbare Platzsituation. Anfang 2023 war eine aufw&#xE4;ndige Sanierung der Stelen erforderlich. Die leuchtenden gelben Stelen betonen den sch&#xF6;nen, zentralen Ort in Bonn-Endenich.</div></div><p style='text-align: center;'><img src='https://gsmediadata.blob.core.windows.net/mediacontainer/637261af-9386-463a-8c15-975f86ce6595' style='max-width:80%; max-height:80%; border:6px solid white; border-radius:20px; box-shadow:5px 5px 7px rgba(0,0,0,0.5);'/></p><div style='font-family:verdana,arial,sans-serif'><div style='box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;padding:1em;margin:2em 0;'><img src='https://labs.geocaching.com/Content/images/al-logo-balloon.svg' align='absmiddle' alt='Adventure' title='Adventure' style='float:right;width:6em;'/><p><span style='background:#060;color:#fff;border-radius:5px;padding:3px 5px;'>Ave: 4.3 rating from 174 Users for 5 Lab Stages. Duration about 7 mins</span>&nbsp;&nbsp;<span style='background:#060;color:#fff;border-radius:5px;padding:3px 5px;'>Sequence: Linear - Art themed</span></p><p>&#x2600;&#xFE0F; Vorgang - Zustand || Bonn || &#x2600;&#xFE0F; &#x1F60E;<br />
+<br />
+Lutz Fritsch: Vorgang - Zustand, 1995<br />
+<br />
+"Vier Stelen erzeugen eine visuell erfahrbare Platzsituation. Die Korrespondenz von drei in Nachbarschaft befindlichen Geb&#xE4;uden, die urspr&#xFC;nglich zu einem Grundst&#xFC;ck geh&#xF6;rten, wird sichtbar. Die S&#xE4;ulen verbinden die H&#xE4;user &#xFC;ber die Stra&#xDF;e hinweg. Die gelben Stelen sind zugleich Energie und Ruhe. Die durchg&#xE4;ngig gelbe Farbe zeigt deutliche Beziehungen auf, die der Betrachter nachvollziehen kann. ... Die leuchtenden gelben Stelen besetzen den Ort nicht, sondern zeigen durch ihre Position und Zuordnung den Raum auf. Sie betonen den Ort."<br />
+<br />
+Quelle: Infotafel zum Kunstwerk von Lutz Fritsch<br />
+Weitere Informationen: www.lutz-fritsch.de<br />
+<br />
+Zus&#xE4;tzlich gibt es den physisch aufzusuchenden und zu findenden Bonus-Cache <a href="gsak://%FF/open/https://coord.info/GCA7RH7">GCA7RH7</a>:<br />
+ "&#x2600;&#xFE0F; Vorgang - Zustand || Bonn || - BONUS &#x2600;&#xFE0F; &#x1F60E;"<br />
+<br />
+https://coord.info/<a href="gsak://%FF/open/https://coord.info/GCA7RH7">GCA7RH7</a><br />
+<br />
+Viel Spa&#xDF; !  &#x2600;&#xFE0F; &#x1F60E;</p></div><p style='text-align: center;'><img src='https://gsmediadata.blob.core.windows.net/mediacontainer/339c218c-f877-4857-be3a-32a6c56f0675' style='max-width:80%; max-height:80%; border:6px solid white; border-radius:20px; box-shadow:5px 5px 7px rgba(0,0,0,0.5); '/></p></div></div>
