@@ -42,6 +42,19 @@ function uni_ord($ch)
     return $val ? $val[1] : 0;
 }
 
+function sanitize_delimiter_field(string $text): string
+{
+    /**
+     * Sanitize fields to prevent delimiter conflicts in GSAK extraction.
+     * Replaces || and |@| delimiters with spaced variants to prevent parsing errors
+     * when GSAK extracts data using these delimiters.
+     */
+    if ($text === "") {
+        return "";
+    }
+    return str_replace(["||", "|@|"], ["| |", "| @ |"], $text);
+}
+
 function strip_gc_a_tags(string $html): string
 {
     return preg_replace_callback(
@@ -302,7 +315,7 @@ $cacheId = intval($basic["id"] ?? 0);
 $coreCode = id_to_corecode62($cacheId);
 $guid = $basic["adventureGuid"] ?? "";
 
-$ALname_raw = $basic["title"] ?? "";
+$ALname_raw = sanitize_delimiter_field($basic["title"] ?? "");
 $ALname = prepare_plain_field($ALname_raw);
 $ALnameHtml = prepare_html_field($ALname_raw);
 
@@ -310,7 +323,7 @@ $visibility = $basic["visibility"] ?? "";
 $isArchived =
     isset($basic["isArchived"]) && $basic["isArchived"] ? "true" : "false";
 $ownerId = $basic["ownerGeoAccountId"] ?? "";
-$ownerName_raw = $basic["ownerUsername"] ?? "";
+$ownerName_raw = sanitize_delimiter_field($basic["ownerUsername"] ?? "");
 $ownerName = prepare_plain_field($ownerName_raw);
 $ownerNameHtml = prepare_html_field($ownerName_raw);
 
@@ -320,7 +333,7 @@ $created = substr($basic["createdUtc"] ?? "", 0, 10);
 $placedDate = substr($basic["publishedUtc"] ?? "", 0, 10);
 $duration = $basic["medianTimeToComplete"] ?? null;
 
-$ALlongDescription_raw = $basic["description"] ?? "";
+$ALlongDescription_raw = sanitize_delimiter_field($basic["description"] ?? "");
 $ALlongDescription_with_gc = make_gc_links($ALlongDescription_raw);
 $ALlongDescriptionHtml = prepare_html_field($ALlongDescription_with_gc);
 
@@ -356,7 +369,7 @@ if ($duration) {
 
 $ALshortDescriptionHtml = "<h2 style=\"text-align: center\">{$ALnameHtml}<br />by<br />{$ownerNameHtml}</h2>";
 
-$ALsplitScreen = "<div style='font-family:verdana,arial,sans-serif'><div style='box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;padding:1em;margin:2em 0;'><img src='https://labs.geocaching.com/Content/images/al-logo-balloon.svg' align='absmiddle' alt='Adventure' title='Adventure' style='float:right;width:6em;'/><p><span style='background:#060;color:#fff;border-radius:5px;padding:3px 5px;'>$gcNote</span>&nbsp;&nbsp;<span style='background:#060;color:#fff;border-radius:5px;padding:3px 5px;'>$sequenceText</span></p><p>{$ALlongDescriptionHtml}</p></div><p style='text-align: center;'><img src='$ALimage' style='max-width:80%; max-height:80%; border:6px solid white; border-radius:20px; box-shadow:5px 5px 7px rgba(0,0,0,0.5); '/></p></div>";
+$ALsplitScreen = "<div style='font-family:verdana,arial,sans-serif'><div style='box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0[...]
 
 if ($showPrivate) {
     // Adventure header row for UserNote: (tabs chosen to match your macro expectation)
@@ -433,7 +446,7 @@ foreach ($stagesArr as $stage) {
 
     $suf = str_pad((string) $lab, 2, "0", STR_PAD_LEFT);
     $guid = $stage["id"] ?? "";
-    $stage_title_raw = $stage["title"] ?? "";
+    $stage_title_raw = sanitize_delimiter_field($stage["title"] ?? "");
     $stage_title_plain = prepare_plain_field($stage_title_raw);
     $LBname = $ALname . " : S" . $lab . " " . $stage_title_plain;
     $LBnameHtml = prepare_html_field($ALnameHtml . " : " . $stage_title_raw);
@@ -453,34 +466,35 @@ foreach ($stagesArr as $stage) {
     $challengeType =
         $stage["challengeType"] ?? ($stage["challenge"]["challengeType"] ?? "");
 
-    $q =
+    $q = sanitize_delimiter_field(
         $stage["questionToAnswer"]["question"] ??
-        ($stage["questionText"] ?? ($stage["question"] ?? ""));
-		// Capture the Answer
+        ($stage["questionText"] ?? ($stage["question"] ?? ""))
+    );
+	// Capture the Answer
     $a = $stage["questionToAnswer"]["answer"] ?? ($stage["answer"] ?? "");
 
     // If the answer is multiChoice
-		if (
+	if (
         strcasecmp($challengeType, "MultiChoice") === 0 ||
         strcasecmp($challengeType, "MultipleChoice") === 0
     ) {
         // set answer
-				$a_plain = "MultiChoice";
+			$a_plain = "MultiChoice";
     } else {
         // Convert answer to an ANSI safe string
-				$a_plain = prepare_plain_field($a);
+			$a_plain = prepare_plain_field($a);
     }
 
     $q_plain = prepare_plain_field($q);
     $q_html = prepare_html_field(make_gc_links($q));
     // Create an HTML entities version of the answer
-		$a_html =
+	$a_html =
         $a_plain === "MultiChoice"
             ? "MultiChoice"
             : prepare_html_field(make_gc_links($a));
 
     $LBdescriptionHtml = prepare_html_field(
-        make_gc_links($stage["description"] ?? "")
+        make_gc_links(sanitize_delimiter_field($stage["description"] ?? ""))
     );
     $LBdescriptionPlain = prepare_plain_field($stage["description"] ?? "");
 
@@ -489,7 +503,7 @@ foreach ($stagesArr as $stage) {
         $LBshortDescriptionHtml .= "<p style=\"text-align: center\"><b>Question</b>: {$q_html}</p>";
     }
 
-    $LBsplitScreen = "<div style='font-family:verdana,arial,sans-serif'><div style='box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0,0,0,0.3) 0px 30px 60px -30px, rgba(10,37,64,0.35) 0px -2px 6px 0px inset;padding:1em;margin:2em 0;'><img src='file:///C:/PROGRA~2/gsak/images/cacheQ.gif' align='absmiddle' alt='Lab Stage' title='Lab Stage' style='float:right;'/><p><span style='background:#060;color:#fff;border-radius:5px;padding:3px 5px;'>Stage {$lab} of {$stagesCount}</span>&nbsp;&nbsp;<span style='background:#060;color:#fff;border-radius:5px;padding:3px 5px;'>{$sequenceText}</span>&nbsp;&nbsp;<span style='background:#060;color:#fff;border-radius:5px;padding:3px 5px;'>Geofence: {$geofence} metres</span></p><div>{$LBdescriptionHtml}</div></div><p style='text-align: center;'><img src='{$LBimage}' style='max-width:80%; max-height:80%; border:6px solid white; border-radius:20px; box-shadow:5px 5px 7px rgba(0,0,0,0.5);'/></p>{$ALsplitScreen}</div>";
+    $LBsplitScreen = "<div style='font-family:verdana,arial,sans-serif'><div style='box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0,0,0,0.3) 0px 30px 60px -30px, rgba(10,37,64,0.3[...]
 
     // Build stage map
     $stage_map = [
@@ -522,7 +536,7 @@ foreach ($stagesArr as $stage) {
     ];
 
     if ($showPrivate) {
-				
+			
         // Award image (safe fallback)
         $awardImage =
             $stage["journal"]["image"]["url"] ??
@@ -549,10 +563,10 @@ foreach ($stagesArr as $stage) {
         // remove non-ASCII to avoid emoji mis-parsing in some tools (keeps basic punctuation)
         $message_plain = preg_replace('/[^\x20-\x7E]/', "", $message_plain);
 
-				// add answer if private
-				$stage_map[19] = ["answer", "answer", $a_html];
-				$stage_map[20] = ["awardImage", "awardImage", $awardImage];
-				$stage_map[21] = ["message", "message", $message_plain];
+			// add answer if private
+			$stage_map[19] = ["answer", "answer", $a_html];
+			$stage_map[20] = ["awardImage", "awardImage", $awardImage];
+			$stage_map[21] = ["message", "message", $message_plain];
 
         // Stage deep-link: use the Adventure deeplink (as you used previously), or build per-stage if available
         $deepLink = $url;
