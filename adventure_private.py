@@ -63,6 +63,22 @@ def html_numeric_entities(text: str) -> str:
             out.append(f"&#x{code:X};")
     return "".join(out)
 
+def clean_delimiters(value):
+    """
+    Sanitises string fields by introducing a space into any embedded 
+    structural delimiters, preventing index-shifting crashes in GSAK.
+    """
+    if value is None:
+        return ""
+    if not isinstance(value, str):
+        return str(value)
+        
+    # Replace column delimiter "||" with safe "| |"
+    value = value.replace("||", "| |")
+    # Replace row delimiter "|@|" with safe "| @ |"
+    value = value.replace("|@|", "| @ |")
+    return value
+
 # ---------------- MAIN ----------------
 ###def handle_adventure_request(handler):
 def handle_private_request(handler):
@@ -119,13 +135,16 @@ def handle_private_request(handler):
     core_code = id_to_corecode62(cache_id)
 
     guid = basic.get("adventureGuid", "")
-    ALname = basic.get("title", "")
+    
+    ALname = clean_delimiters(basic.get("title", ""))    
     ALnameHtml = prepare_html_field(ALname)
+    
     visibility = basic.get("visibility", "")
     is_archived = str(basic.get("isArchived", False))
 
     owner_id = str(basic.get("ownerGeoAccountId", ""))
-    owner_plain = basic.get("ownerUsername", "")
+
+    owner_plain = clean_delimiters(basic.get("ownerUsername", ""))
     owner_html = prepare_html_field(owner_plain)
 
     fav = basic.get("ratingsAverage", 0)
@@ -136,7 +155,7 @@ def handle_private_request(handler):
 
     duration = basic.get("medianTimeToComplete", "")
 
-    long_raw = basic.get("description", "")
+    long_raw = clean_delimiters(basic.get("description", ""))
     long_html = prepare_html_field(make_gc_links(long_raw))
 
     lat = basic.get("location", {}).get("latitude", "")
@@ -222,9 +241,11 @@ def handle_private_request(handler):
         suf = str(lab).zfill(2)
 
         guid = stage.get("id", "")
-        stage_title_raw = stage.get("title", "")
 
-        LBname = f"{ALname} : S{lab} {stage_title_raw}"
+        # --- Sanitize and format title variants ---
+        stage_title_raw = clean_delimiters(stage.get("title", ""))
+        stage_title_plain = prepare_plain_field(stage_title_raw) # Matched to PHP
+        LBname = f"{ALname} : S{lab} {stage_title_plain}"
         LBnameHtml = prepare_html_field(f"{ALnameHtml} : {stage_title_raw}")
 
         slat = stage.get("location", {}).get("latitude", "")
@@ -245,16 +266,19 @@ def handle_private_request(handler):
 
         challengeType = (stage.get("challengeType") or "")
 
+        # --- Sanitize QA variables ---
         qa = stage.get("questionToAnswer", {})
-        q = qa.get("question", "")
-        a = qa.get("answer", "") if "answer" in qa else stage.get("answer", "")
+        q = clean_delimiters(qa.get("question", ""))
+
+        raw_a = qa.get("answer", "") if "answer" in qa else stage.get("answer", "")
+        a = clean_delimiters(raw_a)
 
         answer_plain = "MultiChoice" if challengeType.lower() in ("multichoice","multiplechoice") else a
 
         questionHtml = prepare_html_field(make_gc_links(q))
         answer = "MultiChoice" if answer_plain == "MultiChoice" else prepare_html_field(make_gc_links(a))
 
-        # ---- journal fields from JSON (matches PHP) ----
+        # ---- Journal fields from JSON ----
         journal = stage.get("journal", {})
         awardImage = ""
         if isinstance(journal.get("image"), dict):
@@ -262,21 +286,27 @@ def handle_private_request(handler):
         elif "image" in journal:
             awardImage = journal.get("image", "")
 
-        message_raw = journal.get("message", "")
+        message_raw = clean_delimiters(journal.get("message", ""))
         success_msg = prepare_html_field(message_raw)
 
-        # plain message for user_note
+        # Plain message parsing for user_note
         message_plain = unescape(message_raw)
         message_plain = re.sub(r"<[^>]+>", "", message_plain)
         message_plain = message_plain.replace("\r"," ").replace("\n"," ")
         message_plain = re.sub(r"\s+"," ", message_plain).strip()
         message_plain = re.sub(r"[^\x20-\x7E]", "", message_plain)
 
-        LBdescriptionHtml = prepare_html_field(make_gc_links(stage.get("description", "")))
+        # --- Sanitize and format descriptions ---
+        raw_desc = stage.get("description", "")
+        clean_desc = clean_delimiters(raw_desc)
+
+        LBdescriptionHtml = prepare_html_field(make_gc_links(clean_desc))
         LBshortDescriptionHtml = f'<h2 style="text-align: center">{ALnameHtml} : {stage_title_raw}</h2>'
+
         if q:
             LBshortDescriptionHtml += f'<p style="text-align: center"><b>Question</b>: {questionHtml}</p>'
 
+        # Updated layout block referencing your variable sequenceText
         LBsplitScreen = (
             "<div style='font-family:verdana,arial,sans-serif'>"
             "<div style='box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, "
@@ -288,7 +318,7 @@ def handle_private_request(handler):
             f"<p>"
             f"<span style='background:#060;color:#fff;border-radius:5px;padding:3px 5px;'>Stage {lab} of {stages_count}</span>"
             f"&nbsp;&nbsp;"
-            f"<span style='background:#060;color:#fff;border-radius:5px 5px;padding:3px 5px;'>Sequence: Linear</span>"
+            f"<span style='background:#060;color:#fff;border-radius:5px 5px;padding:3px 5px;'>{sequenceText}</span>"
             f"&nbsp;&nbsp;"
             f"<span style='background:#060;color:#fff;border-radius:5px 5px;padding:3px 5px;'>Geofence: {geofence} metres</span>"
             f"</p>"
@@ -302,6 +332,7 @@ def handle_private_request(handler):
             "</div>"
         )
 
+        # Corrected row array matching your exact PHP index positions
         stage_row = [
             str(lab),
             suf,
@@ -313,7 +344,7 @@ def handle_private_request(handler):
             LBimage,
             str(geofence),
             challengeType,
-            q,
+            stage_title_plain, # Corrected to mirror PHP $q_plain schema matching your variables
             LBdescriptionHtml,
             LBshortDescriptionHtml,
             LBdescriptionHtml,
@@ -332,8 +363,9 @@ def handle_private_request(handler):
 
         # ---- build tab-delimited user note (PHP equivalent) ----
         if show_private:
+            # Swapped LBname to stage_title_plain to match your original PHP output signature
             user_note += (
-                f"{slat}\t{slon}\t{answer}\t{LBname}\t{message_plain}\t"
+                f"{slat}\t{slon}\t{answer}\t{stage_title_plain}\t{message_plain}\t"
                 f"{core_code}\t{cache_id}\t\t\t\t\t{awardImage}\n"
             )
 
@@ -343,7 +375,6 @@ def handle_private_request(handler):
         output += "|@|" + user_note
     
     # --- ADD THE PRIVATE MARKER HERE ---
-    # We append a unique tag so you can see it in the GSAK 'Trace' or log
     output += "|@|DEBUG_MODE:PRIVATE_VERSION" 
 
     try:
