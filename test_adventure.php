@@ -155,6 +155,21 @@ function prepare_plain_field(string $s, ?string $coreCode = null): string {
     return $s;
 }
 
+/**
+ * Sanitises string values by adding spaces to conflicting delimiters
+ * to prevent breaking the GSAK macro indexing logic.
+ */
+function cleanDelimiters($value) {
+    if (is_null($value) || !is_string($value)) {
+        return $value;
+    }
+    // Replace column delimiter "||" with safe "| |"
+    $value = str_replace('||', '| |', $value);
+    // Replace row delimiter "|@|" with safe "| @ |"
+    $value = str_replace('|@|', '| @ |', $value);
+    return $value;
+}
+
 function fetch_adventure_json_block(string $uuid): string
 {
     $url = "https://labs.geocaching.com/goto/" . rawurlencode($uuid);
@@ -302,7 +317,7 @@ $cacheId = intval($basic["id"] ?? 0);
 $coreCode = id_to_corecode62($cacheId);
 $guid = $basic["adventureGuid"] ?? "";
 
-$ALname_raw = $basic["title"] ?? "";
+$ALname_raw = cleanDelimiters($basic["title"] ?? "");
 $ALname = prepare_plain_field($ALname_raw);
 $ALnameHtml = prepare_html_field($ALname_raw);
 
@@ -310,7 +325,8 @@ $visibility = $basic["visibility"] ?? "";
 $isArchived =
     isset($basic["isArchived"]) && $basic["isArchived"] ? "true" : "false";
 $ownerId = $basic["ownerGeoAccountId"] ?? "";
-$ownerName_raw = $basic["ownerUsername"] ?? "";
+
+$ownerName_raw = cleanDelimiters($basic["ownerUsername"] ?? "");
 $ownerName = prepare_plain_field($ownerName_raw);
 $ownerNameHtml = prepare_html_field($ownerName_raw);
 
@@ -320,7 +336,7 @@ $created = substr($basic["createdUtc"] ?? "", 0, 10);
 $placedDate = substr($basic["publishedUtc"] ?? "", 0, 10);
 $duration = $basic["medianTimeToComplete"] ?? null;
 
-$ALlongDescription_raw = $basic["description"] ?? "";
+$ALlongDescription_raw = cleanDelimiters($basic["description"] ?? "");
 $ALlongDescription_with_gc = make_gc_links($ALlongDescription_raw);
 $ALlongDescriptionHtml = prepare_html_field($ALlongDescription_with_gc);
 
@@ -433,8 +449,10 @@ foreach ($stagesArr as $stage) {
 
     $suf = str_pad((string) $lab, 2, "0", STR_PAD_LEFT);
     $guid = $stage["id"] ?? "";
-    $stage_title_raw = $stage["title"] ?? "";
+
+    $stage_title_raw = cleanDelimiters($stage["title"] ?? "");
     $stage_title_plain = prepare_plain_field($stage_title_raw);
+
     $LBname = $ALname . " : S" . $lab . " " . $stage_title_plain;
     $LBnameHtml = prepare_html_field($ALnameHtml . " : " . $stage_title_raw);
 
@@ -453,11 +471,11 @@ foreach ($stagesArr as $stage) {
     $challengeType =
         $stage["challengeType"] ?? ($stage["challenge"]["challengeType"] ?? "");
 
-    $q =
-        $stage["questionToAnswer"]["question"] ??
-        ($stage["questionText"] ?? ($stage["question"] ?? ""));
-		// Capture the Answer
-    $a = $stage["questionToAnswer"]["answer"] ?? ($stage["answer"] ?? "");
+    $q_raw = $stage["questionToAnswer"]["question"] ?? ($stage["questionText"] ?? ($stage["question"] ?? ""));
+    $q = cleanDelimiters($q_raw);
+
+    $a_raw = $stage["questionToAnswer"]["answer"] ?? ($stage["answer"] ?? "");
+    $a = cleanDelimiters($a_raw);
 
     // If the answer is multiChoice
 		if (
@@ -479,10 +497,9 @@ foreach ($stagesArr as $stage) {
             ? "MultiChoice"
             : prepare_html_field(make_gc_links($a));
 
-    $LBdescriptionHtml = prepare_html_field(
-        make_gc_links($stage["description"] ?? "")
-    );
-    $LBdescriptionPlain = prepare_plain_field($stage["description"] ?? "");
+    $stage_desc_raw = cleanDelimiters($stage["description"] ?? "");
+    $LBdescriptionHtml = prepare_html_field(make_gc_links($stage_desc_raw));
+    $LBdescriptionPlain = prepare_plain_field($stage_desc_raw);
 
     $LBshortDescriptionHtml = "<h2 style=\"text-align: center\">{$LBnameHtml}</h2>";
     if ($q) {
